@@ -76,8 +76,8 @@ const XPChip = forwardRef<HTMLSpanElement, XPChipProps>(
           "inline-flex items-center gap-1",
           "rounded-none",
           "px-3 py-1",
-          "text-sm font-bold leading-snug",
-          "bg-[var(--reward-bg)] text-[var(--reward-text)]",
+          "text-[0.7rem] font-bold leading-snug uppercase tracking-[0.06em]",
+          "border border-[var(--border)] bg-[var(--panel)] text-[var(--ink)]",
           "",
           "select-none whitespace-nowrap",
           className

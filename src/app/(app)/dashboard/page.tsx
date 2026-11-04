@@ -45,27 +45,27 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-[var(--surface-sunken)] pb-24 md:pb-12 text-[var(--ink)]">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 border-b border-[var(--border)] bg-[var(--surface-overlay)]">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-6">
+      <header className="dashboard-header">
+        <div className="dashboard-nav-inner">
+          <div className="dashboard-nav-left">
             <Link className="brand-lockup" href="/" aria-label="PromptLab home">
               <span className="brand-mark"><span /></span>
               <span>PromptLab</span>
             </Link>
-            <nav className="hidden md:flex items-center gap-4 text-sm font-semibold text-[var(--ink-muted)]">
-              <Link href="/dashboard" className="text-[var(--brand)] font-bold">
+            <nav className="dashboard-nav-links" aria-label="Signed-in navigation">
+              <Link href="/dashboard" className="dashboard-nav-link is-active" aria-current="page">
                 Dashboard
               </Link>
-              <Link href="/#courses" className="hover:text-[var(--ink)] transition-colors">
+              <Link href="/#courses" className="dashboard-nav-link">
                 Learning Paths
               </Link>
-              <Link href="/#studio" className="hover:text-[var(--ink)] transition-colors">
+              <Link href="/#studio" className="dashboard-nav-link">
                 Studio
               </Link>
             </nav>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="dashboard-nav-actions">
             <XPChip amount={340} />
             <StreakChip count={4} active />
             <ThemeToggle />
