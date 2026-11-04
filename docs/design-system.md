@@ -188,3 +188,20 @@ Before shipping a new surface:
 5. Check English plus a Hindi/Marathi sample when text is user-facing.
 6. Confirm all text/background pairs against the approved contrast table or
    add a measured pair to this document.
+# Theme modes
+
+PromptLab supports Light, Dark, and System modes through `next-themes`. The
+choice is local to the browser and is applied with the `class` strategy so
+semantic tokens remain the single styling interface. The compact
+`ThemeToggle` cycles modes; `ThemeSelector` is intended for settings screens.
+Theme changes use a circular View Transition when supported and a scoped
+fallback transition otherwise. Reduced-motion users receive an instant switch.
+
+The application surfaces use a calm blue brand (`#2876b8` / dark-mode
+`#72b5df`) for readable navigation and actions. The landing page intentionally
+scopes the original purple identity to its own surfaces and illustrations.
+Text uses the navy ink tokens; mint, gold, and coral remain accent fills rather
+than body text. The main contrast pairs are `--ink` on `--surface`,
+`--ink-muted` on `--surface`, white on `--brand` in light mode, and
+`--ink` on `--surface-raised` in dark mode; these are selected from the
+token scales to meet WCAG AA.

@@ -50,6 +50,8 @@ export {
 export { default as Textarea } from "./Textarea";
 export { ThemeToggle } from "./ThemeToggle";
 export { ThemeProvider } from "./ThemeProvider";
+export { default as ThemeSelector } from "./ThemeSelector";
+export { default as ThemeMeta } from "./ThemeMeta";
 export { default as Toast, ToastProvider, useToast } from "./Toast";
 export { default as Tooltip } from "./Tooltip";
 export { default as XPChip } from "./XPChip";

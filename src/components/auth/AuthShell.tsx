@@ -3,7 +3,7 @@
 import { Flame, Sparkles } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Mascot } from "@/components/design-system";
+import { Mascot, ThemeToggle } from "@/components/design-system";
 import XPChip from "@/components/design-system/XPChip";
 import StreakChip from "@/components/design-system/StreakChip";
 
@@ -22,6 +22,7 @@ export default function AuthShell({
       <section className="auth-brand-panel" aria-label="About PromptLab">
         <div className="auth-mesh" aria-hidden="true" />
         <Link className="auth-logo" href="/" aria-label="PromptLab home"><span className="brand-mark"><span /></span>PromptLab</Link>
+        <ThemeToggle className="auth-theme-toggle" />
         <div className="auth-brand-content">
           <span className="eyebrow-chip"><Sparkles size={14} /> Your learning lab</span>
           <h1>Welcome back.<br /> <span>Your next prompt<br />is waiting.</span></h1>

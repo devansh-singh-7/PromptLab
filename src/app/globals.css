@@ -117,11 +117,11 @@
   color-scheme: light;
 
   /* Brand */
-  --brand: var(--color-purple-500);
-  --brand-hover: var(--color-purple-600);
-  --brand-active: var(--color-purple-700);
-  --brand-muted: var(--color-purple-100);
-  --brand-ring: var(--color-purple-400);
+  --brand: #2876b8;
+  --brand-hover: #1d5b91;
+  --brand-active: #16466f;
+  --brand-muted: #e7f3fa;
+  --brand-ring: #4c9bd0;
 
   /* Success (mint) */
   --success: var(--color-mint-600);
@@ -170,16 +170,35 @@
   --skeleton-to: var(--color-navy-100);
 }
 
+html.theme-transition-fallback,
+html.theme-transition-fallback body,
+html.theme-transition-fallback * {
+  transition: background-color 280ms ease, color 280ms ease, border-color 280ms ease,
+    fill 280ms ease, stroke 280ms ease, box-shadow 280ms ease !important;
+}
+
+@supports (view-transition-name: root) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
+
+  ::view-transition-new(root) {
+    clip-path: circle(var(--theme-radius, 150vmax) at var(--theme-x, 50%) var(--theme-y, 50%));
+  }
+}
+
 /* ── Semantic tokens — Dark Theme ──────────────────────────── */
 .dark {
   color-scheme: dark;
 
   /* Brand */
-  --brand: var(--color-purple-400);
-  --brand-hover: var(--color-purple-300);
-  --brand-active: var(--color-purple-200);
-  --brand-muted: var(--color-purple-900);
-  --brand-ring: var(--color-purple-500);
+  --brand: #72b5df;
+  --brand-hover: #9bcce9;
+  --brand-active: #c3e1f1;
+  --brand-muted: #193b55;
+  --brand-ring: #4c9bd0;
 
   /* Success */
   --success: var(--color-mint-400);
@@ -224,6 +243,74 @@
   --skeleton-from: var(--color-navy-800);
   --skeleton-to: var(--color-navy-700);
 }
+
+.auth-theme-toggle {
+  color: rgba(255, 255, 255, .86) !important;
+  background: rgba(255, 255, 255, .12) !important;
+  border: 1px solid rgba(255, 255, 255, .18);
+  position: absolute;
+  right: 28px;
+  top: 28px;
+  z-index: 3;
+}
+
+.auth-theme-toggle:hover {
+  background: rgba(255, 255, 255, .2) !important;
+  color: #fff !important;
+}
+
+.theme-selector {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.theme-selector-option {
+  align-items: center;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  color: var(--ink-muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  font: inherit;
+  gap: 8px;
+  min-width: 0;
+  padding: 12px 8px;
+  position: relative;
+  transition: border-color .2s, color .2s, transform .2s, box-shadow .2s;
+}
+
+.theme-selector-option:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+
+.theme-selector-option.is-selected {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 16%, transparent);
+  color: var(--brand);
+}
+
+.theme-selector-preview {
+  background: var(--surface);
+  border: 1px solid var(--border-muted);
+  border-radius: 7px;
+  display: grid;
+  gap: 3px;
+  padding: 5px;
+  width: 100%;
+}
+
+.theme-selector-preview span {
+  background: var(--brand-muted);
+  border-radius: 2px;
+  height: 4px;
+}
+
+.theme-selector-preview span:first-child { background: var(--brand); width: 60%; }
+.theme-selector-preview span:last-child { background: var(--success); width: 78%; }
 
 /* ── Base styles ───────────────────────────────────────────── */
 * {
@@ -477,6 +564,11 @@ code, pre, kbd, samp {
 /* ── Landing page ─────────────────────────────────────────── */
 .landing-page {
   --landing-width: 1180px;
+  --brand: var(--color-purple-500);
+  --brand-hover: var(--color-purple-600);
+  --brand-active: var(--color-purple-700);
+  --brand-muted: var(--color-purple-100);
+  --brand-ring: var(--color-purple-400);
   background: var(--surface);
   color: var(--ink);
   min-height: 100vh;

@@ -23,6 +23,7 @@ import {
   PathNode,
   ProgressRing,
   StreakChip,
+  ThemeToggle,
   XPChip,
 } from "@/components/design-system";
 
@@ -180,7 +181,9 @@ function MiniIllustration({ type }: { type: number }) {
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [promptRunning, setPromptRunning] = useState(false);
   const reduced = useReducedMotion();
+  const loginHref = "/login?next=%2Fdashboard";
 
   return (
     <main className="landing-page" id="top">
@@ -195,13 +198,14 @@ export default function Home() {
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#studio" onClick={() => setMenuOpen(false)}>Studio</a>
           <div className="mobile-nav-actions">
-            <a className="landing-button landing-button-ghost" href="#login">Log in</a>
-            <a className="landing-button landing-button-primary" href="#start">Start learning <ArrowRight size={16} /></a>
+            <a className="landing-button landing-button-ghost" href={loginHref}>Log in</a>
+            <a className="landing-button landing-button-primary" href={loginHref}>Start learning <ArrowRight size={16} /></a>
           </div>
         </nav>
         <div className="header-actions">
-          <a className="header-login" href="#login">Log in</a>
-          <a className="landing-button landing-button-primary" href="#start">Start learning <ArrowRight size={16} /></a>
+          <ThemeToggle />
+          <a className="header-login" href="/login">Log in</a>
+          <a className="landing-button landing-button-primary" href={loginHref}>Start learning <ArrowRight size={16} /></a>
         </div>
         <button className="mobile-menu-button" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen}>
           {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -231,7 +235,7 @@ export default function Home() {
           </h1>
           <p className="hero-support">Explore prompt engineering through interactive courses, real-world challenges and specialized AI workspaces.</p>
           <div className="hero-actions">
-            <a className="landing-button landing-button-primary landing-button-large" href="#start">Start learning <ArrowRight size={18} /></a>
+            <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>Start learning <ArrowRight size={18} /></a>
             <a className="landing-button landing-button-secondary landing-button-large" href="#courses">Explore courses <ChevronDown size={17} /></a>
           </div>
           <div className="hero-proof"><span className="proof-avatars"><i /><i /><i /></span><span>Made for curious builders</span><span className="proof-dot" /><span>Learn at your pace</span></div>
@@ -262,7 +266,7 @@ export default function Home() {
       <section className="path-section landing-container">
         <Reveal className="section-heading path-heading">
           <div><span className="section-kicker">Your learning path</span><h2>Keep going. <span>See where it leads.</span></h2></div>
-          <a className="text-link" href="#start">View the roadmap <ArrowRight size={16} /></a>
+          <a className="text-link" href="#courses">View the roadmap <ArrowRight size={16} /></a>
         </Reveal>
         <Reveal>
           <div className="path-preview">
@@ -285,7 +289,7 @@ export default function Home() {
         <Reveal delay={0.08}><div className="studio-window">
           <div className="studio-toolbar"><span className="window-dots"><i /><i /><i /></span><span className="studio-file"><Code2 size={14} /> landing-page.tsx</span><span className="studio-toolbar-label">PromptLab Studio</span></div>
           <div className="studio-grid">
-            <div className="studio-panel prompt-panel"><span className="panel-label">Your prompt</span><motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>Create a welcoming hero section for a learning app. Use a warm purple palette, a clear call to action, and a card that celebrates progress.</motion.p><button className="run-button" type="button"><Play size={14} fill="currentColor" /> Run prompt</button></div>
+            <div className="studio-panel prompt-panel"><span className="panel-label">Your prompt</span><motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>Create a welcoming hero section for a learning app. Use a warm purple palette, a clear call to action, and a card that celebrates progress.</motion.p><button className="run-button" type="button" onClick={() => { setPromptRunning(true); window.setTimeout(() => setPromptRunning(false), 1200); }} aria-live="polite"><Play size={14} fill="currentColor" /> {promptRunning ? "Building preview..." : "Run prompt"}</button></div>
             <div className="studio-panel code-panel"><span className="panel-label">Generated structure</span><div className="code-lines"><i /><i /><i /><i /><i /><i /></div><span className="code-cursor" /></div>
             <div className="studio-panel preview-panel"><span className="panel-label">Live preview</span><div className="mock-preview"><div className="mock-nav" /><div className="mock-hero"><span /><b /><i /></div><div className="mock-cards"><i /><i /><i /></div></div></div>
             <div className="studio-feedback"><span className="feedback-icon"><Check size={16} /></span><span><strong>Nice direction.</strong> Clear goal and a helpful visual brief.</span><b>92</b></div>
@@ -307,10 +311,10 @@ export default function Home() {
 
       <section className="final-cta landing-container" id="start">
         <div className="cta-glow" aria-hidden="true" />
-        <Reveal><div className="cta-mascot"><Mascot state="wave" size="lg" label="Pip is waving hello" /></div><span className="section-kicker">Your next idea is waiting</span><h2>Ready to make AI<br /><span>work for you?</span></h2><p>Start with one prompt. Leave with a new way to think.</p><a className="landing-button landing-button-primary landing-button-large" href="#login">Start learning <ArrowRight size={18} /></a></Reveal>
+        <Reveal><div className="cta-mascot"><Mascot state="wave" size="lg" label="Pip is waving hello" /></div><span className="section-kicker">Your next idea is waiting</span><h2>Ready to make AI<br /><span>work for you?</span></h2><p>Start with one prompt. Leave with a new way to think.</p><a className="landing-button landing-button-primary landing-button-large" href={loginHref}>Start learning <ArrowRight size={18} /></a></Reveal>
       </section>
 
-      <footer className="landing-footer landing-container"><a className="brand-lockup" href="#top"><span className="brand-mark"><span /></span><span>PromptLab</span></a><span>Learn. Practice. Experiment. Build.</span><div><a href="#courses">Courses</a><a href="#how-it-works">How it works</a><a href="#login">Log in</a></div></footer>
+      <footer className="landing-footer landing-container"><a className="brand-lockup" href="#top"><span className="brand-mark"><span /></span><span>PromptLab</span></a><span>Learn. Practice. Experiment. Build.</span><div><a href="#courses">Courses</a><a href="#how-it-works">How it works</a><a href="/login">Log in</a></div></footer>
     </main>
   );
 }
