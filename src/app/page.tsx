@@ -3,13 +3,10 @@
 import {
   ArrowRight,
   BookOpen,
-  CircleCheckBig,
   Code2,
-  Clock3,
   Layers3,
   Menu,
   Rocket,
-  Sparkles,
   Target,
   WandSparkles,
   X,
@@ -18,8 +15,6 @@ import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   Mascot,
-  PathNode,
-  ProgressRing,
   ThemeToggle,
 } from "@/components/design-system";
 
@@ -50,70 +45,6 @@ const principles = [
   },
 ] as const;
 
-type LearningLevel = {
-  label: string;
-  state: "locked" | "available" | "in-progress" | "completed";
-  progress: number;
-  eyebrow: string;
-  title: string;
-  description: string;
-  duration: string;
-  reward: string;
-};
-
-const levels: LearningLevel[] = [
-  {
-    label: "Foundations",
-    state: "completed",
-    progress: 100,
-    eyebrow: "Level 1 · Complete",
-    title: "Prompt fundamentals unlocked",
-    description: "You learned how role, context, constraints, and examples work together.",
-    duration: "8 challenges finished",
-    reward: "+240 XP earned",
-  },
-  {
-    label: "Frontend",
-    state: "in-progress",
-    progress: 45,
-    eyebrow: "Level 2 · In progress",
-    title: "Build a responsive component brief",
-    description: "Give an AI enough product context to create a polished, accessible UI on the first pass.",
-    duration: "5 min · Challenge 4 of 8",
-    reward: "+80 XP waiting",
-  },
-  {
-    label: "Full stack",
-    state: "available",
-    progress: 0,
-    eyebrow: "Level 3 · Ready when you are",
-    title: "Plan your first full-stack flow",
-    description: "Map user intent to data, endpoints, and an interface that handles real-world states.",
-    duration: "Unlock after Frontend",
-    reward: "+320 XP to earn",
-  },
-  {
-    label: "Debugging",
-    state: "locked",
-    progress: 0,
-    eyebrow: "Level 4 · Locked",
-    title: "Diagnose AI-generated code",
-    description: "Practice turning confusing symptoms into focused debugging prompts and test cases.",
-    duration: "Complete Full stack first",
-    reward: "A new debugging badge",
-  },
-  {
-    label: "Real-world",
-    state: "locked",
-    progress: 0,
-    eyebrow: "Level 5 · Locked",
-    title: "Ship with confidence",
-    description: "Bring every prompt skill together in production-style projects and review loops.",
-    duration: "Complete Debugging first",
-    reward: "PromptLab mastery badge",
-  },
-];
-
 function Reveal({
   children,
   className = "",
@@ -141,10 +72,7 @@ function Reveal({
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selectedLevel, setSelectedLevel] = useState("Frontend");
   const loginHref = "/login?next=%2Fdashboard";
-  const activeLevel = levels.find((level) => level.label === selectedLevel) ?? levels[1];
-  const isLockedLevel = activeLevel.state === "locked";
 
   return (
     <main className="landing-page" id="top">
@@ -156,7 +84,6 @@ export default function Home() {
         </a>
 
         <nav className={`landing-nav ${menuOpen ? "is-open" : ""}`} aria-label="Main navigation">
-          <a href="#courses" onClick={() => setMenuOpen(false)}>Courses</a>
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="/login" onClick={() => setMenuOpen(false)}>Log in</a>
         </nav>
@@ -195,7 +122,7 @@ export default function Home() {
             <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
               Start learning <ArrowRight size={18} />
             </a>
-            <a className="landing-button landing-button-secondary landing-button-large" href="#courses">
+            <a className="landing-button landing-button-secondary landing-button-large" href="#how-it-works">
               Explore path
             </a>
           </div>
@@ -228,106 +155,6 @@ export default function Home() {
             </Reveal>
           ))}
         </div>
-      </section>
-
-      {/* Learning Path Preview Section */}
-      <section className="path-section landing-container" id="courses">
-        <Reveal className="section-heading path-heading">
-          <div>
-            <h2>Web Development <span>Path</span></h2>
-            <p>From foundational mental models to production architectures and debugging workflows.</p>
-          </div>
-          <a className="text-link" href={loginHref}>
-            View curriculum <ArrowRight size={16} />
-          </a>
-        </Reveal>
-
-        <Reveal>
-          <div className="path-preview">
-            <div className="path-preview-header">
-              <div>
-                <span className="eyebrow-chip" aria-label="Active track"><Sparkles size={14} /></span>
-                <h3 aria-label="Web Development">Web Development</h3>
-                <p>Five levels of structured prompt engineering with live code verification at each step.</p>
-              </div>
-              <div className="path-meta">
-                <ProgressRing value={35} size={48} strokeWidth={4} />
-                <div>
-                  <strong>35% through your path</strong>
-                  <small>3 challenges down · your streak is warm</small>
-                </div>
-              </div>
-            </div>
-
-            <div className="path-progress-summary" aria-label="Learning path progress">
-              <div className="path-progress-copy">
-                <span>Next checkpoint</span>
-                <strong>Component briefs</strong>
-              </div>
-              <div className="path-progress-track" aria-hidden="true"><span /></div>
-              <span className="path-progress-count">3 / 8 complete</span>
-            </div>
-
-            <p className="trail-hint"><Sparkles size={14} /> Pick an unlocked milestone to see its mission.</p>
-
-            <div className="trail-row" role="list" aria-label="Path milestones">
-              <div className="trail-connector-line">
-                <div className="trail-connector-fill" />
-              </div>
-              {levels.map((level) => (
-                <div
-                  key={level.label}
-                  className={`trail-item ${selectedLevel === level.label ? "is-selected" : ""}`}
-                  role="listitem"
-                >
-                  <PathNode
-                    state={level.state}
-                    progress={level.progress}
-                    size="md"
-                    label={level.label}
-                    onClick={() => setSelectedLevel(level.label)}
-                  />
-                  <span>{level.label}</span>
-                  {level.state === "in-progress" && <small>You're here</small>}
-                </div>
-              ))}
-            </div>
-
-            <motion.div
-              key={activeLevel.label}
-              className={`path-mission ${isLockedLevel ? "is-locked" : ""}`}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              aria-live="polite"
-            >
-              <div className="mission-guide">
-                <Mascot
-                  state={isLockedLevel ? "think" : activeLevel.state === "completed" ? "cheer" : "encourage"}
-                  size="sm"
-                  label={isLockedLevel ? "Pip is thinking" : "Pip is encouraging you"}
-                />
-              </div>
-              <div className="mission-content">
-                <span className="mission-eyebrow">{activeLevel.eyebrow}</span>
-                <h4>{activeLevel.title}</h4>
-                <p>{activeLevel.description}</p>
-                <div className="mission-meta">
-                  <span><Clock3 size={14} /> {activeLevel.duration}</span>
-                  <span><CircleCheckBig size={14} /> {activeLevel.reward}</span>
-                </div>
-              </div>
-              {isLockedLevel ? (
-                <span className="mission-locked-note">Keep going to unlock</span>
-              ) : (
-                <a className="mission-action" href={loginHref}>
-                  {activeLevel.state === "completed" ? "Review level" : activeLevel.state === "available" ? "Preview level" : "Continue mission"}
-                  <ArrowRight size={16} />
-                </a>
-              )}
-            </motion.div>
-          </div>
-        </Reveal>
       </section>
 
       {/* Domain Exploration Section */}
