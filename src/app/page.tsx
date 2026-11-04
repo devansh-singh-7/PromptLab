@@ -204,7 +204,6 @@ export default function Home() {
         </nav>
         <div className="header-actions">
           <ThemeToggle />
-          <a className="header-login" href="/login">Log in</a>
           <a className="landing-button landing-button-primary" href={loginHref}>Start learning <ArrowRight size={16} /></a>
         </div>
         <button className="mobile-menu-button" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen}>
