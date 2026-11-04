@@ -91,3 +91,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unable to establish session." }, { status: 401 });
   }
 }
+
+export async function DELETE() {
+  const response = NextResponse.json({ ok: true });
+  response.cookies.set("promptlab_session", "", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 0,
+  });
+  return response;
+}

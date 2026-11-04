@@ -17,7 +17,6 @@ import {
   User,
 } from "lucide-react";
 import {
-  Avatar,
   Card,
   CardContent,
   CardDescription,
@@ -30,6 +29,7 @@ import {
   ThemeToggle,
   XPChip,
 } from "@/components/design-system";
+import ProfileMenu from "@/components/auth/ProfileMenu";
 
 const trailMilestones = [
   { label: "Level 1: Foundations", state: "in-progress" as const, progress: 60 },
@@ -69,7 +69,7 @@ export default function DashboardPage() {
             <XPChip amount={340} />
             <StreakChip count={4} active />
             <ThemeToggle />
-            <Avatar name="Devansh Singh" initials="DV" size="sm" alt="Devansh's profile" />
+            <ProfileMenu />
           </div>
         </div>
       </header>

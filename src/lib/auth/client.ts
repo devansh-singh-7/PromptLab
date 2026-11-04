@@ -2,11 +2,15 @@ import { getApps, initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
   getAuth,
+  onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
   getRedirectResult,
+  signOut,
+  updateProfile,
+  type User,
   type UserCredential,
 } from "firebase/auth";
 
@@ -65,4 +69,21 @@ export async function createSession(user: UserCredential["user"]) {
     body: JSON.stringify({ idToken: token }),
   });
   if (!response.ok) throw new Error("We couldn't start your session. Please try again.");
+}
+
+export function watchCurrentUser(callback: (user: User | null) => void) {
+  return onAuthStateChanged(getFirebaseAuth(), callback);
+}
+
+export async function updateUserProfile(profile: { displayName: string; photoURL: string | null }) {
+  const auth = getFirebaseAuth();
+  if (!auth.currentUser) throw new Error("Your session has expired. Please sign in again.");
+  await updateProfile(auth.currentUser, profile);
+  return auth.currentUser;
+}
+
+export async function signOutUser() {
+  await signOut(getFirebaseAuth());
+  const response = await fetch("/api/auth/session", { method: "DELETE" });
+  if (!response.ok) throw new Error("We couldn't sign you out completely. Please try again.");
 }
