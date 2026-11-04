@@ -133,7 +133,6 @@ export default function Home() {
           </div>
 
           <div className="hero-proof">
-            <span className="proof-avatars"><i /><i /><i /></span>
             <span className="proof-dot" />
           </div>
         </div>
