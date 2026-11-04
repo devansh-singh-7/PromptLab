@@ -367,6 +367,7 @@ background: color-mix(in srgb, var(--panel) 93%, transparent);
   max-width: 1152px;
   padding: 0 24px;
   position: relative;
+  position: relative;
   width: 100%;
 }
 
@@ -710,6 +711,9 @@ background: color-mix(in srgb, var(--panel) 93%, transparent);
   display: flex;
   flex-direction: column;
   gap: 4px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
 }
 
 .profile-preference-row strong {
@@ -1756,6 +1760,28 @@ background: color-mix(in srgb, var(--panel) 93%, transparent);
   padding-bottom: 40px;
   padding-top: 28px;
   gap: 20px;
+}
+
+.back-to-top-button {
+  background: var(--panel);
+  border: 2px solid var(--border);
+  bottom: 20px;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font: 700 0.7rem/1.2 var(--font-mono);
+  left: 50%;
+  letter-spacing: 0.06em;
+  padding: 10px 14px;
+  position: fixed;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  z-index: 45;
+}
+
+.back-to-top-button:hover {
+  background: var(--select-tint);
+  color: var(--select);
+  transform: translate(-50%, -2px);
 }
 
 .landing-footer > div {

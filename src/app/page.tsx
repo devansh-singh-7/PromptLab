@@ -451,7 +451,6 @@ export default function Home() {
             <Mascot state="wave" size="lg" label="Pip is waving" />
           </div>
           <h2>Ready to level up your <span>prompting?</span></h2>
-          <p>Join developers who treat AI as a powerful collaborative instrument, not a black box.</p>
           <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
             Start learning free <ArrowRight size={18} />
           </a>
@@ -465,7 +464,7 @@ export default function Home() {
           <span>PromptLab</span>
         </div>
         <div>
-          <a href="#top">Back to top</a>
+          <a className="back-to-top-button" href="#top">Back to top</a>
           <a href={loginHref}>Sign in</a>
         </div>
       </footer>
