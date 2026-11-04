@@ -366,6 +366,7 @@ background: color-mix(in srgb, var(--panel) 93%, transparent);
   margin: 0 auto;
   max-width: 1152px;
   padding: 0 24px;
+  position: relative;
   width: 100%;
 }
 
@@ -383,6 +384,9 @@ background: color-mix(in srgb, var(--panel) 93%, transparent);
 
 .dashboard-nav-links {
   gap: 4px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
 }
 
 .dashboard-nav-link {

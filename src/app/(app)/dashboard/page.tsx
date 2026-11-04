@@ -80,8 +80,8 @@ export default function DashboardPage() {
         <section className="relative overflow-hidden rounded-none border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-8 ">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="space-y-2 max-w-xl">
-              <span className="eyebrow-chip">
-                <Sparkles size={13} /> Active Session
+              <span className="eyebrow-chip" aria-label="Active session">
+                <Sparkles size={13} />
               </span>
               <h1 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight">
                 Welcome back, Devansh! Ready for your next challenge?

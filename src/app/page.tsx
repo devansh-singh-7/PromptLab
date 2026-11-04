@@ -206,9 +206,7 @@ export default function Home() {
 
           <div className="hero-proof">
             <span className="proof-avatars"><i /><i /><i /></span>
-            <span>Made for curious developers</span>
             <span className="proof-dot" />
-            <span>Interactive feedback, no fluff</span>
           </div>
         </div>
       </section>
@@ -240,7 +238,6 @@ export default function Home() {
       <section className="path-section landing-container" id="courses">
         <Reveal className="section-heading path-heading">
           <div>
-            <span className="section-kicker">Learning journey</span>
             <h2>Web Development <span>Path</span></h2>
             <p>From foundational mental models to production architectures and debugging workflows.</p>
           </div>
@@ -253,7 +250,7 @@ export default function Home() {
           <div className="path-preview">
             <div className="path-preview-header">
               <div>
-                <span className="eyebrow-chip"><Sparkles size={14} /> Active track</span>
+                <span className="eyebrow-chip" aria-label="Active track"><Sparkles size={14} /></span>
                 <h3 aria-label="Web Development">Web Development</h3>
                 <p>Five levels of structured prompt engineering with live code verification at each step.</p>
               </div>
@@ -341,7 +338,6 @@ export default function Home() {
       <section className="studio-section landing-container" id="studio">
         <Reveal className="studio-heading">
           <div>
-            <span className="section-kicker">Interactive workbench</span>
             <h2>The PromptLab <span>Studio</span></h2>
             <p>A focused environment where you prompt, inspect generated code, and verify behavior in real time.</p>
           </div>
@@ -420,7 +416,6 @@ export default function Home() {
       {/* Domain Exploration Section */}
       <section className="domains-section landing-container">
         <Reveal className="section-heading">
-          <span className="section-kicker">Expanding horizon</span>
           <h2>Specialized <span>Learning Tracks</span></h2>
         </Reveal>
 
@@ -455,7 +450,6 @@ export default function Home() {
           <div className="cta-mascot">
             <Mascot state="wave" size="lg" label="Pip is waving" />
           </div>
-          <span className="section-kicker">Get started today</span>
           <h2>Ready to level up your <span>prompting?</span></h2>
           <p>Join developers who treat AI as a powerful collaborative instrument, not a black box.</p>
           <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
