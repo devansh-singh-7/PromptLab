@@ -12,11 +12,12 @@ import {
   X,
 } from "lucide-react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Mascot,
   ThemeToggle,
 } from "@/components/design-system";
+import { watchCurrentUser } from "@/lib/auth/client";
 
 const principles = [
   {
@@ -72,7 +73,11 @@ function Reveal({
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const loginHref = "/login?next=%2Fdashboard";
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const learningHref = isSignedIn ? "/dashboard" : "/login?next=%2Fdashboard";
+  const learningLabel = isSignedIn ? "Resume Learning" : "Start learning";
+
+  useEffect(() => watchCurrentUser((user) => setIsSignedIn(Boolean(user))), []);
 
   return (
     <main className="landing-page" id="top">
@@ -90,8 +95,8 @@ export default function Home() {
 
         <div className="header-actions">
           <ThemeToggle />
-          <a className="landing-button landing-button-primary" href={loginHref}>
-            Start learning <ArrowRight size={16} />
+          <a className="landing-button landing-button-primary" href={learningHref}>
+            {learningLabel} <ArrowRight size={16} />
           </a>
           <button
             className="mobile-menu-button"
@@ -119,8 +124,8 @@ export default function Home() {
           </h1>
 
           <div className="hero-actions">
-            <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
-              Start learning <ArrowRight size={18} />
+            <a className="landing-button landing-button-primary landing-button-large" href={learningHref}>
+              {learningLabel} <ArrowRight size={18} />
             </a>
             <a className="landing-button landing-button-secondary landing-button-large" href="#how-it-works">
               Explore path
@@ -195,8 +200,8 @@ export default function Home() {
             <Mascot state="wave" size="lg" label="Pip is waving" />
           </div>
           <h2>Ready to level up your <span>prompting?</span></h2>
-          <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
-            Start learning free <ArrowRight size={18} />
+          <a className="landing-button landing-button-primary landing-button-large" href={learningHref}>
+            {learningLabel} <ArrowRight size={18} />
           </a>
         </Reveal>
       </section>
@@ -209,7 +214,7 @@ export default function Home() {
         </div>
         <div>
           <a className="back-to-top-button" href="#top">Back to top</a>
-          <a href={loginHref}>Sign in</a>
+          <a href={learningHref}>{isSignedIn ? "Dashboard" : "Sign in"}</a>
         </div>
       </footer>
     </main>

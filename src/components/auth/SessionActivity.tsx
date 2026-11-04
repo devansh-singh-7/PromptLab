@@ -54,6 +54,9 @@ export default function SessionActivity() {
       }
       markActivity();
       lastRefresh = Date.now();
+      void createSession(user).catch((error) => {
+        console.error("Session initialization failed.", error);
+      });
     });
 
     const events = ["pointerdown", "keydown", "scroll", "touchstart", "focus"];
