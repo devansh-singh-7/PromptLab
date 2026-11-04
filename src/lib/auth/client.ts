@@ -14,6 +14,9 @@ import {
   type UserCredential,
 } from "firebase/auth";
 
+export const INACTIVITY_LIMIT_MS = 3 * 24 * 60 * 60 * 1000;
+const ACTIVITY_STORAGE_KEY = "promptlab:last-activity";
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -84,6 +87,22 @@ export async function updateUserProfile(profile: { displayName: string; photoURL
 
 export async function signOutUser() {
   await signOut(getFirebaseAuth());
+  if (typeof window !== "undefined") {
+    window.localStorage.removeItem(ACTIVITY_STORAGE_KEY);
+  }
   const response = await fetch("/api/auth/session", { method: "DELETE" });
   if (!response.ok) throw new Error("We couldn't sign you out completely. Please try again.");
+}
+
+export function getLastActivity() {
+  if (typeof window === "undefined") return null;
+  const value = window.localStorage.getItem(ACTIVITY_STORAGE_KEY);
+  const timestamp = value ? Number(value) : NaN;
+  return Number.isFinite(timestamp) ? timestamp : null;
+}
+
+export function markActivity() {
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(ACTIVITY_STORAGE_KEY, String(Date.now()));
+  }
 }

@@ -4,6 +4,7 @@ import { getAuth } from "firebase-admin/auth";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+const SESSION_MAX_AGE_SECONDS = 3 * 24 * 60 * 60;
 
 function adminAuth() {
   const app = getApps()[0] ?? initializeApp({
@@ -82,7 +83,7 @@ export async function POST(request: Request) {
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      maxAge: 60 * 60 * 24 * 5,
+      maxAge: SESSION_MAX_AGE_SECONDS,
     });
     response.headers.set("X-User-Id", "uid" in decoded ? decoded.uid : decoded.sub);
     return response;

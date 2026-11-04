@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { fontVariables } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/design-system/ThemeProvider";
 import ThemeMeta from "@/components/design-system/ThemeMeta";
+import SessionActivity from "@/components/auth/SessionActivity";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontVariables} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ThemeProvider><ThemeMeta />{children}</ThemeProvider>
+        <ThemeProvider><ThemeMeta /><SessionActivity />{children}</ThemeProvider>
       </body>
     </html>
   );
