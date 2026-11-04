@@ -325,6 +325,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
 }
@@ -354,6 +359,10 @@ code, pre, kbd, samp {
   }
 
   .landing-page {
+    scroll-behavior: auto;
+  }
+
+  html {
     scroll-behavior: auto;
   }
 
@@ -587,6 +596,7 @@ code, pre, kbd, samp {
 
 .landing-page a { color: inherit; text-decoration: none; }
 .landing-page [id] { scroll-margin-top: 96px; }
+.landing-anchor { display: block; height: 0; scroll-margin-top: 96px; }
 .landing-container { margin: 0 auto; max-width: var(--landing-width); padding-left: 28px; padding-right: 28px; position: relative; }
 .landing-mesh { background-image: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--brand) 13%, transparent) 1px, transparent 0); background-size: 28px 28px; height: 900px; left: 0; mask-image: linear-gradient(to bottom, black, transparent 78%); opacity: .35; pointer-events: none; position: absolute; right: 0; top: 0; }
 .landing-mesh::before, .landing-mesh::after { border-radius: 999px; content: ""; filter: blur(4px); height: 480px; opacity: .34; position: absolute; width: 480px; }

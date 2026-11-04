@@ -244,12 +244,13 @@ export default function Home() {
       </section>
 
       <section className="principles-section landing-container" id="how-it-works">
+        <span className="landing-anchor" id="courses" aria-hidden="true" />
         <Reveal className="section-heading">
           <span className="section-kicker">A better way to learn</span>
           <h2>From blank page to <span>breakthrough.</span></h2>
           <p>Every part of PromptLab is designed to help you move from “I wonder” to “I built it.”</p>
         </Reveal>
-        <div className="principles-grid" id="courses">
+        <div className="principles-grid">
           {principles.map(({ title, copy, icon: Icon, tone }, index) => (
             <Reveal key={title} delay={index * 0.08}>
               <article className={`principle-card tone-${tone}`}>
