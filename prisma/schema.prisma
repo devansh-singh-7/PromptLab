@@ -6,10 +6,15 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  LEARNER
+  ADMIN
+  EDITOR
+}
+
 enum ContentStatus {
   DRAFT
   PUBLISHED
-  ARCHIVED
 }
 
 enum Difficulty {
@@ -18,161 +23,670 @@ enum Difficulty {
   ADVANCED
 }
 
+enum LessonStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ChallengeType {
+  PROMPT_REPAIR
+  PROMPT_WRITING
+  MULTIPLE_CHOICE
+  ORDERING
+  FILL_GAP
+  SCENARIO
+}
+
+enum VideoProvider {
+  YOUTUBE
+  MUX
+  CLOUDFLARE
+}
+
+enum PermissionStatus {
+  UNKNOWN
+  VERIFIED
+  RESTRICTED
+  UNAVAILABLE
+}
+
+enum PracticalStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  EVALUATED
+  PASSED
+  FAILED
+}
+
+enum StudioSessionStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum ArtifactType {
+  SOURCE
+  PREVIEW
+  REPORT
+  DEPLOYMENT
+}
+
+enum QuestPeriod {
+  DAILY
+  WEEKLY
+}
+
+enum XPSourceType {
+  LESSON
+  QUIZ
+  CHALLENGE
+  PRACTICAL
+  LEVEL
+  QUEST
+  ACHIEVEMENT
+  CERTIFICATE
+}
+
+enum AuditAction {
+  CREATE
+  UPDATE
+  PUBLISH
+  UNPUBLISH
+  DELETE
+  ROLE_CHANGE
+}
+
 model User {
-  id              String               @id @default(cuid())
-  firebaseUid     String               @unique
-  email           String               @unique
-  displayName     String?
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
-  profile         UserProfile?
-  preferences     LearningPreferences?
-  domainPreferences UserDomainPreference[]
-  progress        UserProgress[]
-  submissions     PromptSubmission[]
+  id                    String                   @id @default(cuid())
+  firebaseUid           String                   @unique
+  email                 String                   @unique
+  role                  UserRole                 @default(LEARNER)
+  displayName           String?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  profile               UserProfile?
+  domainPreferences     UserDomainPreferences[]
+  learningPaths         LearningPath[]           @relation("UserLearningPaths")
+  progress              UserProgress[]
+  promptSubmissions     PromptSubmission[]
+  practicalSubmissions  PracticalSubmission[]
+  studioSessions        StudioSession[]
+  certificates          Certificate[]
+  xpEvents              XPEvent[]
+  achievements          UserAchievement[]
+  skillMasteries        SkillMastery[]
+  dailyActivities       DailyActivity[]
+  quests                UserQuest[]
+  aiUsage               AIUsage[]
+  auditLogs             AuditLog[]               @relation("ActorAuditLogs")
+  quotaWindows          AIQuotaWindow[]
 }
 
 model UserProfile {
-  id          String   @id @default(cuid())
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  explanationLanguage String @default("en")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model LearningPreferences {
-  id             String   @id @default(cuid())
-  userId         String   @unique
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  learningPace   String   @default("normal")
-  learningStyle  String   @default("mixed")
-  availableTime  String?
-  aiTool         String?
-  projectType    String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id           String   @id @default(cuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  uiLanguage   String   @default("en")
+  timezone     String   @default("UTC")
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Domain {
-  id          String       @id @default(cuid())
-  slug        String       @unique
-  name        String
-  description String
-  isActive    Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  courses     Course[]
-  preferences UserDomainPreference[]
+  id                String                   @id @default(cuid())
+  slug              String                   @unique
+  name              String
+  description       String
+  status            ContentStatus             @default(DRAFT)
+  createdAt         DateTime                 @default(now())
+  updatedAt         DateTime                 @updatedAt
+  preferences       UserDomainPreferences[]
+  learningPaths     LearningPath[]
+  courses           Course[]
+  achievements      Achievement[]
+  practicals        Practical[]
+  capstoneBriefs    CapstoneBrief[]
 }
 
-model UserDomainPreference {
-  id             String   @id @default(cuid())
-  userId         String
-  domainId       String
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  domain         Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  experience     Difficulty @default(BEGINNER)
-  technicalStack Json
-  goals          Json
-  roadmap        Json?
-  approvedAt     DateTime?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+model UserDomainPreferences {
+  id                  String     @id @default(cuid())
+  userId              String
+  domainId            String
+  user                User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain              Domain     @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  explanationLanguage String     @default("en")
+  technicalStack      String[]
+  difficulty          Difficulty @default(BEGINNER)
+  pace                String     @default("normal")
+  goal                String
+  availableTime       String
+  learningStyle       String
+  aiToolPreference    String
+  projectPreference   String
+  extras              Json       @default("{}")
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @updatedAt
+
   @@unique([userId, domainId])
+  @@index([domainId, difficulty])
+}
+
+model LearningPath {
+  id          String        @id @default(cuid())
+  domainId    String
+  userId      String?
+  domain      Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  user        User?         @relation("UserLearningPaths", fields: [userId], references: [id], onDelete: Cascade)
+  slug        String
+  title       String
+  description String
+  isTemplate  Boolean       @default(true)
+  status      ContentStatus @default(DRAFT)
+  roadmap     Json
+  approvedAt  DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([domainId, slug, userId])
+  @@index([userId, status])
 }
 
 model Course {
-  id          String        @id @default(cuid())
-  domainId    String
-  domain      Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  slug        String
-  title       String
-  description String
-  status      ContentStatus @default(DRAFT)
-  modules     Module[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  id           String        @id @default(cuid())
+  domainId     String
+  domain       Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  slug         String
+  title        String
+  description  String
+  objective    String
+  status       ContentStatus @default(DRAFT)
+  version      Int           @default(1)
+  publishedAt  DateTime?
+  levels       Level[]
+  practicals   Practical[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
   @@unique([domainId, slug])
+  @@index([status, publishedAt])
 }
 
-model Module {
-  id          String        @id @default(cuid())
-  courseId    String
-  course      Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  title       String
-  description String
-  order       Int
-  lessons     Lesson[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  @@unique([courseId, order])
+model Level {
+  id             String        @id @default(cuid())
+  courseId       String
+  course         Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug           String
+  number         Int
+  title          String
+  goal           String
+  description    String
+  status         ContentStatus @default(DRAFT)
+  version        Int           @default(1)
+  publishedAt    DateTime?
+  lessons        Lesson[]
+  practicals     Practical[]
+  prerequisites  LevelPrerequisite[] @relation("LevelPrerequisiteTarget")
+  requiredFor    LevelPrerequisite[] @relation("LevelPrerequisiteSource")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([courseId, number])
+  @@unique([courseId, slug])
+  @@index([status, publishedAt])
+}
+
+model LevelPrerequisite {
+  id             String @id @default(cuid())
+  levelId        String
+  prerequisiteId String
+  level          Level  @relation("LevelPrerequisiteTarget", fields: [levelId], references: [id], onDelete: Cascade)
+  prerequisite   Level  @relation("LevelPrerequisiteSource", fields: [prerequisiteId], references: [id], onDelete: Restrict)
+
+  @@unique([levelId, prerequisiteId])
+  @@index([prerequisiteId])
 }
 
 model Lesson {
-  id          String        @id @default(cuid())
-  moduleId    String
-  module      Module        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  slug        String
-  title       String
-  theory      Json
-  objectives  Json
-  status      ContentStatus @default(DRAFT)
-  order       Int
-  challenges  Challenge[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  @@unique([moduleId, slug])
-  @@unique([moduleId, order])
+  id                 String        @id @default(cuid())
+  levelId            String
+  level              Level         @relation(fields: [levelId], references: [id], onDelete: Cascade)
+  slug               String
+  number             Int
+  title              String
+  objective          String
+  theory             Json
+  status             ContentStatus @default(DRAFT)
+  version            Int           @default(1)
+  publishedAt        DateTime?
+  translations       LessonTranslation[]
+  videos             LessonVideo[]
+  challenges         Challenge[]
+  practicals         Practical[]
+  progress           UserProgress[]
+  prerequisites      LessonPrerequisite[] @relation("LessonPrerequisiteTarget")
+  requiredFor        LessonPrerequisite[] @relation("LessonPrerequisiteSource")
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@unique([levelId, number])
+  @@unique([levelId, slug])
+  @@index([status, publishedAt])
+}
+
+model LessonPrerequisite {
+  id             String @id @default(cuid())
+  lessonId       String
+  prerequisiteId String
+  lesson         Lesson @relation("LessonPrerequisiteTarget", fields: [lessonId], references: [id], onDelete: Cascade)
+  prerequisite   Lesson @relation("LessonPrerequisiteSource", fields: [prerequisiteId], references: [id], onDelete: Restrict)
+
+  @@unique([lessonId, prerequisiteId])
+  @@index([prerequisiteId])
+}
+
+model LessonTranslation {
+  id              String   @id @default(cuid())
+  lessonId        String
+  lesson          Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  locale          String
+  localizedBlocks Json
+  technicalBlocks Json
+  version         Int      @default(1)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@unique([lessonId, locale])
+  @@index([locale])
+}
+
+model Video {
+  id                  String           @id @default(cuid())
+  provider            VideoProvider
+  externalId          String
+  durationSec         Int?
+  creatorName         String?
+  channelUrl          String?
+  permissionStatus    PermissionStatus @default(UNKNOWN)
+  embeddableCheckedAt DateTime?
+  lastLinkCheckAt     DateTime?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  lessons             LessonVideo[]
+
+  @@unique([provider, externalId])
+  @@index([permissionStatus, lastLinkCheckAt])
+}
+
+model LessonVideo {
+  id       String @id @default(cuid())
+  lessonId String
+  videoId  String
+  order    Int    @default(1)
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  video    Video  @relation(fields: [videoId], references: [id], onDelete: Restrict)
+
+  @@unique([lessonId, videoId])
+  @@unique([lessonId, order])
 }
 
 model Challenge {
-  id          String        @id @default(cuid())
-  lessonId    String
-  lesson      Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  id             String        @id @default(cuid())
+  lessonId       String
+  lesson         Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  slug           String
+  title          String
+  type           ChallengeType
+  instructions   String
+  config         Json
+  hints          Json
+  xpReward      Int           @default(50)
+  maxAttempts    Int?
+  difficulty     Difficulty   @default(BEGINNER)
+  status         ContentStatus @default(DRAFT)
+  version        Int           @default(1)
+  publishedAt    DateTime?
+  rubric         EvaluationRubric?
+  submissions    PromptSubmission[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([lessonId, slug])
+  @@index([status, type])
+}
+
+model EvaluationRubric {
+  id          String                    @id @default(cuid())
+  challengeId String                    @unique
+  challenge   Challenge                 @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  name        String
+  versions    EvaluationRubricVersion[]
+  createdAt   DateTime                  @default(now())
+  updatedAt   DateTime                  @updatedAt
+}
+
+model EvaluationRubricVersion {
+  id          String             @id @default(cuid())
+  rubricId    String
+  rubric      EvaluationRubric  @relation(fields: [rubricId], references: [id], onDelete: Cascade)
+  version     Int
+  dimensions  Json
+  isImmutable Boolean            @default(false)
+  usedAt      DateTime?
+  evaluations PromptEvaluation[]
+  createdAt   DateTime           @default(now())
+
+  @@unique([rubricId, version])
+  @@index([isImmutable, usedAt])
+}
+
+model Practical {
+  id          String         @id @default(cuid())
+  domainId    String
+  courseId    String?
+  levelId     String?
+  domain      Domain         @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  course      Course?        @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  level       Level?         @relation(fields: [levelId], references: [id], onDelete: SetNull)
+  slug        String
   title       String
-  instructions String
+  brief       String
+  requirements Json
   rubric      Json
-  hints       Json
-  difficulty  Difficulty    @default(BEGINNER)
-  status      ContentStatus @default(DRAFT)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  xpReward    Int            @default(150)
+  status      PracticalStatus @default(DRAFT)
+  version     Int            @default(1)
+  lessons     Lesson[]
+  submissions PracticalSubmission[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@unique([domainId, slug])
+  @@index([status, domainId])
+}
+
+model CapstoneBrief {
+  id           String        @id @default(cuid())
+  domainId     String
+  domain       Domain        @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  slug         String
+  title        String
+  brief        String
+  requirements Json
+  status       ContentStatus @default(DRAFT)
+  version      Int           @default(1)
+  certificates Certificate[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@unique([domainId, slug])
+}
+
+model UserProgress {
+  id              String       @id @default(cuid())
+  userId          String
+  lessonId        String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson          Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  status          LessonStatus @default(NOT_STARTED)
+  stepCompletion  Json         @default("{}")
+  bestScore       Int?
+  completedAt     DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@unique([userId, lessonId])
+  @@index([userId, status])
 }
 
 model PromptSubmission {
-  id          String   @id @default(cuid())
+  id          String             @id @default(cuid())
   userId      String
   challengeId String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge          @relation(fields: [challengeId], references: [id], onDelete: Restrict)
   promptText  String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  attempt     Int                @default(1)
+  status      SubmissionStatus   @default(SUBMITTED)
   evaluations PromptEvaluation[]
-  createdAt   DateTime @default(now())
+  createdAt   DateTime           @default(now())
+
+  @@unique([userId, challengeId, attempt])
   @@index([userId, challengeId, createdAt])
 }
 
 model PromptEvaluation {
-  id           String           @id @default(cuid())
-  submissionId String
-  submission   PromptSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
-  score        Int
-  dimensions   Json
-  strengths    Json
-  weaknesses   Json
-  hints        Json
-  model        String
-  rubricVersion String
-  createdAt    DateTime         @default(now())
+  id             String                 @id @default(cuid())
+  submissionId   String
+  rubricVersionId String
+  submission     PromptSubmission       @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  rubricVersion  EvaluationRubricVersion @relation(fields: [rubricVersionId], references: [id], onDelete: Restrict)
+  score          Int
+  validatedJson  Json
+  model          String
+  tokensIn       Int?
+  tokensOut      Int?
+  latencyMs      Int?
+  createdAt      DateTime               @default(now())
+
+  @@index([submissionId, createdAt])
+  @@index([rubricVersionId])
 }
 
-model UserProgress {
-  id         String   @id @default(cuid())
+model PracticalSubmission {
+  id          String           @id @default(cuid())
+  userId      String
+  practicalId String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  practical   Practical        @relation(fields: [practicalId], references: [id], onDelete: Restrict)
+  status      SubmissionStatus @default(DRAFT)
+  promptText  String?
+  result      Json?
+  score       Int?
+  attempt     Int              @default(1)
+  artifacts   ProjectArtifact[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  @@unique([userId, practicalId, attempt])
+  @@index([userId, practicalId, status])
+}
+
+model StudioSession {
+  id          String              @id @default(cuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  status      StudioSessionStatus @default(ACTIVE)
+  stack       Json
+  prompt      String?
+  startedAt   DateTime            @default(now())
+  lastActiveAt DateTime           @default(now())
+  endedAt     DateTime?
+  artifacts   ProjectArtifact[]
+
+  @@index([userId, status, lastActiveAt])
+}
+
+model ProjectArtifact {
+  id                    String              @id @default(cuid())
+  practicalSubmissionId String?
+  studioSessionId       String?
+  practicalSubmission   PracticalSubmission? @relation(fields: [practicalSubmissionId], references: [id], onDelete: Cascade)
+  studioSession         StudioSession?      @relation(fields: [studioSessionId], references: [id], onDelete: Cascade)
+  type                  ArtifactType
+  path                  String
+  content               String?
+  metadata              Json?
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+
+  @@unique([studioSessionId, path])
+  @@index([practicalSubmissionId, type])
+}
+
+model Certificate {
+  id             String        @id @default(cuid())
+  userId         String
+  capstoneBriefId String
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capstoneBrief  CapstoneBrief @relation(fields: [capstoneBriefId], references: [id], onDelete: Restrict)
+  verificationCode String      @unique
+  issuedAt       DateTime      @default(now())
+
+  @@unique([userId, capstoneBriefId])
+}
+
+model XPEvent {
+  id         String        @id @default(cuid())
   userId     String
-  lessonId   String
-  completed  Boolean  @default(false)
-  xp         Int      @default(0)
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  @@unique([userId, lessonId])
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceType XPSourceType
+  sourceId   String
+  amount     Int
+  metadata   Json?
+  createdAt  DateTime      @default(now())
+
+  @@unique([userId, sourceType, sourceId])
+  @@index([userId, createdAt])
+}
+
+model Achievement {
+  id          String          @id @default(cuid())
+  domainId    String?
+  domain      Domain?         @relation(fields: [domainId], references: [id], onDelete: SetNull)
+  slug        String          @unique
+  name        String
+  description String
+  xpReward    Int             @default(0)
+  criteria    Json
+  userAwards  UserAchievement[]
+  createdAt   DateTime        @default(now())
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  achievementId String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  earnedAt      DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+  @@index([achievementId, earnedAt])
+}
+
+model SkillMastery {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skillKey  String
+  score     Int      @default(0)
+  level     Int      @default(1)
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, skillKey])
+}
+
+model DailyActivity {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activityDate DateTime @db.Date
+  timezone    String
+  xpEarned    Int      @default(0)
+  minutes     Int      @default(0)
+  completed   Int      @default(0)
+
+  @@unique([userId, activityDate])
+  @@index([userId, activityDate])
+}
+
+model DailyQuest {
+  id          String      @id @default(cuid())
+  slug        String      @unique
+  title       String
+  description String
+  period      QuestPeriod @default(DAILY)
+  target      Json
+  xpReward    Int
+  status      ContentStatus @default(PUBLISHED)
+  userQuests  UserQuest[]
+}
+
+model UserQuest {
+  id          String      @id @default(cuid())
+  userId      String
+  questId     String
+  periodStart DateTime    @db.Date
+  progress    Json        @default("{}")
+  completedAt DateTime?
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quest       DailyQuest  @relation(fields: [questId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, questId, periodStart])
+  @@index([userId, periodStart])
+}
+
+model AIUsage {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  model       String
+  operation   String
+  tokensIn    Int      @default(0)
+  tokensOut   Int      @default(0)
+  latencyMs   Int?
+  status      String
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([model, createdAt])
+}
+
+model AIQuotaConfig {
+  id        String   @id @default(cuid())
+  model     String   @unique
+  rpm       Int
+  tpm       Int
+  rpd       Int
+  editable  Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model AIQuotaWindow {
+  id          String   @id @default(cuid())
+  userId      String?
+  model       String
+  windowKey   String
+  requestCount Int     @default(0)
+  tokenCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, model, windowKey])
+  @@index([model, windowKey])
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  actorId    String?
+  actor      User?       @relation("ActorAuditLogs", fields: [actorId], references: [id], onDelete: SetNull)
+  action     AuditAction
+  entityType String
+  entityId   String
+  before     Json?
+  after      Json?
+  createdAt  DateTime    @default(now())
+
+  @@index([entityType, entityId, createdAt])
+  @@index([actorId, createdAt])
 }

@@ -14,8 +14,8 @@ is still at foundation stage:
   `1.64.1`.
 - Routes: `/` and Next.js-generated `/_not-found`.
 - Source modules: `src/app` and `src/lib` only.
-- Database: a starting PostgreSQL Prisma schema exists; no migrations or
-  database connection workflow has been created.
+- Database: a multi-domain-ready PostgreSQL Prisma schema, initial migration,
+  idempotent seed, and `pnpm db:setup` workflow are available.
 - Authentication: no Firebase client SDK, Firebase Admin SDK, session-cookie
   verification, middleware, or protected route exists yet.
 - Environment handling: `.env` exists locally and is not committed; the
@@ -33,7 +33,7 @@ Status values: **not started**, **in progress**, **done**, or **blocked**.
 |---|---|---|
 | Foundation | done | Next.js App Router, strict TypeScript, package scripts, lint, unit-test, E2E-test, and build configuration exist. |
 | Design system | in progress | Initial PromptLab palette, typography, responsive cards, focus styles, and reduced-motion handling exist; shadcn/ui, Radix primitives, reusable tokens, and full component system do not. |
-| Schema | in progress | Prisma has User, profile/preferences, Domain, Course, Module, Lesson, Challenge, submissions, evaluations, and lesson progress; migrations, seed content, practicals, videos, achievements, daily activity, AI usage/quota, studio sessions, artifacts, and admin audit data are missing. |
+| Schema | done | Prisma models identity, domain-scoped paths, five-level content, prerequisites, translations, challenges, practicals, capstone briefs, progress, studio artifacts, gamification, quotas, and audit data. |
 | Auth | not started | Firebase Auth client sign-in, Firebase Admin session-cookie verification, custom-claim roles, route protection, and user synchronization are absent. |
 | Landing | in progress | `/` communicates the product promise and Web Development release; marketing sections, authentication CTAs, accessible navigation, and real sign-in flow are absent. |
 | App shell / dashboard | not started | No shared navigation, dashboard, profile/settings, loading states, or authenticated shell exists. |
@@ -47,7 +47,7 @@ Status values: **not started**, **in progress**, **done**, or **blocked**.
 | Web Development Studio | not started | No Studio Engine, prompt editor, generated-file model, CodeMirror editor, Sandpack preview, console, feedback panel, or isolated backend execution exists. |
 | Practicals / capstone | not started | No five practical assignments, capstone briefs, artifact evaluation, rubric report, certificate criteria, or project history exists. |
 | Admin | not started | No admin authorization, content CRUD, publishing/versioning, reordering, rubric management, learner preview, or audit trail exists. |
-| Content | not started | The five-level Web Development curriculum is specified in the documents but no lessons, videos, quizzes, challenges, practicals, or capstone records are seeded in the database. |
+| Content | in progress | `pnpm db:setup` seeds all five levels and 30 lesson records; Level 1 lessons 1–2 and the first prompt-repair challenge are fully written, while later lessons are explicit Prompt 18 draft placeholders. |
 | QA | in progress | Baseline commands pass: `npm run typecheck`, `npm run lint`, `npm test`, and `npm run build`. End-to-end journeys, accessibility, responsive behavior, authorization, security, quota concurrency, and content calibration are not tested. |
 
 ## Gap analysis against the specifications

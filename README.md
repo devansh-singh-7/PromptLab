@@ -10,8 +10,10 @@ challenges, feedback, and an isolated studio.
 3. Copy `.env.example` to `.env.local` and fill in the required values.
 4. Ensure PostgreSQL is available at `DATABASE_URL`.
 5. Generate the Prisma client with `pnpm db:generate`.
-6. Install the Playwright browser once with `pnpm exec playwright install chromium`.
-7. Start development with `pnpm dev`.
+6. For an empty PostgreSQL database, apply the initial migration and Release 1
+   content with `pnpm db:setup`.
+7. Install the Playwright browser once with `pnpm exec playwright install chromium`.
+8. Start development with `pnpm dev`.
 
 ## Scripts
 
@@ -23,6 +25,8 @@ challenges, feedback, and an isolated studio.
 - `pnpm test` - run Vitest and React Testing Library tests.
 - `pnpm test:e2e` - run the Playwright smoke suite.
 - `pnpm db:generate` - generate the Prisma client.
+- `pnpm db:seed` - upsert the Web Development Release 1 seed data.
+- `pnpm db:setup` - apply migrations and seed an empty database.
 
 ## Architecture
 
@@ -30,7 +34,7 @@ challenges, feedback, and an isolated studio.
 - `src/components` contains reusable UI organized by product surface.
 - `src/domains` contains web-development curriculum and challenge rules.
 - `src/lib` contains infrastructure integrations and cross-cutting services.
-- `prisma` contains the PostgreSQL schema and future migrations.
+- `prisma` contains the PostgreSQL schema, migrations, and Release 1 seed.
 
 The initial route boundaries are reserved for marketing, authentication,
 authenticated product areas, and administration. Generated code is expected to
