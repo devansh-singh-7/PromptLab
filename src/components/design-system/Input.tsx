@@ -83,14 +83,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 .join(" ") || undefined
             }
             className={cn(
-              "w-full rounded-[var(--radius-lg)] border bg-[var(--input-bg)] text-[var(--ink)] placeholder:text-[var(--ink-faint)]",
+              "w-full rounded-none border bg-[var(--input-bg)] text-[var(--ink)] placeholder:text-[var(--ink-faint)]",
               "transition-colors transition-shadow duration-[var(--duration-fast)]",
               "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
               "disabled:cursor-not-allowed disabled:opacity-50",
               "leading-[1.6]",
               sizeClasses[inputSize],
               hasError
-                ? "border-coral-500 focus-visible:ring-[var(--attention-ring)]"
+                ? "border-[var(--attention-bg)]0 focus-visible:ring-[var(--attention-ring)]"
                 : "border-[var(--input-border)]",
               leftIcon && "pl-10",
               rightIcon && "pr-10",

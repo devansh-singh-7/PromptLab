@@ -43,14 +43,14 @@ const SelectTrigger = React.forwardRef<
       <SelectPrimitive.Trigger
         ref={ref}
         className={cn(
-          "flex h-10 w-full items-center justify-between gap-2 rounded-[var(--radius-lg)] border bg-[var(--input-bg)] px-4 text-base text-[var(--ink)]",
+          "flex h-10 w-full items-center justify-between gap-2 rounded-none border bg-[var(--input-bg)] px-4 text-base text-[var(--ink)]",
           "placeholder:text-[var(--ink-faint)]",
           "transition-colors transition-shadow duration-[var(--duration-fast)]",
           "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
           "disabled:cursor-not-allowed disabled:opacity-50",
           "leading-[1.6]",
           hasError
-            ? "border-coral-500 focus-visible:ring-[var(--attention-ring)]"
+            ? "border-[var(--attention-bg)]0 focus-visible:ring-[var(--attention-ring)]"
             : "border-[var(--input-border)]",
           className
         )}
@@ -118,7 +118,7 @@ const SelectContent = React.forwardRef<
       position={position}
       sideOffset={sideOffset}
       className={cn(
-        "relative z-50 min-w-[8rem] overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border)] bg-[var(--surface)] shadow-[var(--shadow-lg)]",
+        "relative z-50 min-w-[8rem] overflow-hidden rounded-none border border-[var(--border)] bg-[var(--surface)] ",
         "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
         "data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2",
@@ -169,7 +169,7 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-pointer select-none items-center rounded-[var(--radius-sm)] px-3 py-2 pr-8 text-sm text-[var(--ink)] leading-[1.6]",
+      "relative flex w-full cursor-pointer select-none items-center rounded-none px-3 py-2 pr-8 text-sm text-[var(--ink)] leading-[1.6]",
       "outline-none",
       "focus:bg-[var(--brand-muted)] focus:text-[var(--ink)]",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",

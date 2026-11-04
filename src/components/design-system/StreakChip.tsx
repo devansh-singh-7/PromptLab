@@ -41,13 +41,13 @@ const StreakChip = forwardRef<HTMLSpanElement, StreakChipProps>(
         ref={ref}
         className={cn(
           "inline-flex items-center gap-1.5",
-          "rounded-[var(--radius-full)]",
+          "rounded-none",
           "px-3 py-1",
           "text-sm font-bold leading-snug",
           "select-none whitespace-nowrap",
           active
             ? "bg-[var(--attention-bg)] text-[var(--attention-text)]"
-            : "bg-navy-100 text-navy-500 dark:bg-navy-700 dark:text-navy-300",
+            : "bg-[var(--surface-sunken)] text-[var(--ink-muted)] dark:bg-[var(--surface-raised)] dark:text-[var(--ink-muted)]",
           className
         )}
         variants={prefersReducedMotion ? undefined : pulseVariants}

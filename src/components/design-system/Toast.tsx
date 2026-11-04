@@ -49,19 +49,19 @@ export interface UseToastReturn {
 const toastVariants = cva(
   [
     "relative flex w-full max-w-sm items-start gap-3 overflow-hidden",
-    "rounded-[var(--radius-lg)] border p-4 shadow-[var(--shadow-lg)]",
+    "rounded-none border p-4 ",
     "pointer-events-auto",
   ],
   {
     variants: {
       variant: {
-        info: "border-purple-200 bg-purple-50 text-purple-900 dark:border-purple-800 dark:bg-purple-900/30 dark:text-purple-100",
+        info: "border-[var(--select)] bg-[var(--select-tint)] text-[var(--ink)] dark:border-[var(--select)] dark:bg-[var(--select-tint)] dark:text-[var(--ink)]",
         success:
-          "border-mint-200 bg-mint-50 text-mint-900 dark:border-mint-800 dark:bg-mint-900/30 dark:text-mint-100",
+          "border-[var(--success)] bg-[var(--success-bg)] text-[var(--success-text)] dark:border-[var(--success)] dark:bg-[var(--success-bg)] dark:text-[var(--success-text)]",
         warning:
-          "border-coral-200 bg-coral-50 text-coral-900 dark:border-coral-800 dark:bg-coral-900/30 dark:text-coral-100",
+          "border-[var(--attention)] bg-[var(--attention-bg)] text-[var(--attention-text)] dark:border-[var(--attention)] dark:bg-[var(--attention-bg)] dark:text-[var(--attention-bg)]",
         error:
-          "border-coral-300 bg-coral-100 text-coral-900 dark:border-coral-700 dark:bg-coral-900/40 dark:text-coral-100",
+          "border-[var(--attention)] bg-[var(--attention-bg)] text-[var(--attention-text)] dark:border-[var(--attention)] dark:bg-[var(--attention-bg)] dark:text-[var(--attention-bg)]",
       },
     },
     defaultVariants: {
@@ -83,7 +83,7 @@ const variantIconColors: Record<ToastVariant, string> = {
   info: "text-[var(--brand)]",
   success: "text-[var(--success)]",
   warning: "text-[var(--attention)]",
-  error: "text-coral-700 dark:text-coral-400",
+  error: "text-[var(--attention-text)] dark:text-[var(--attention-text)]",
 };
 
 /* ─── Motion variants ─────────────────────────────────────── */
@@ -251,7 +251,7 @@ function ToastItem({ data, onDismiss }: ToastItemProps) {
         onClick={() => onDismiss(data.id)}
         className={cn(
           "inline-flex size-6 shrink-0 items-center justify-center",
-          "rounded-[var(--radius-sm)] opacity-60",
+          "rounded-none opacity-60",
           "transition-opacity hover:opacity-100 focus-ring",
         )}
         aria-label="Dismiss notification"

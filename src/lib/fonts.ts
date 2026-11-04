@@ -1,28 +1,23 @@
-import { Lexend, Inter, JetBrains_Mono, Noto_Sans_Devanagari } from "next/font/google";
+import { Noto_Sans_Devanagari, Space_Grotesk, Space_Mono } from "next/font/google";
 
 /**
- * Typography stack for PromptLab.
- * Headings: Lexend — very readable, friendly.
- * Body: Inter — clean, versatile.
- * Code: JetBrains Mono — developer-standard monospace.
- * Devanagari: Noto Sans Devanagari — beautiful Hindi/Marathi rendering.
+ * Typography stack for PromptLab's design-tool theme.
+ * Space Mono carries display, labels, controls, numbers, tags, and code.
+ * Space Grotesk keeps long-form reading comfortable.
+ * Noto Sans Devanagari provides Hindi and Marathi coverage.
  */
 
-export const fontHeading = Lexend({
+export const fontDisplay = Space_Mono({
   subsets: ["latin"],
-  variable: "--font-heading",
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
   display: "swap",
 });
 
-export const fontBody = Inter({
+export const fontBody = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-export const fontCode = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-code",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
   display: "swap",
 });
 
@@ -35,9 +30,7 @@ export const fontDevanagari = Noto_Sans_Devanagari({
 
 /** Combine all font CSS variables as a single className string */
 export const fontVariables = [
-  fontHeading.variable,
+  fontDisplay.variable,
   fontBody.variable,
-  fontCode.variable,
   fontDevanagari.variable,
 ].join(" ");
-

@@ -34,7 +34,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex items-center gap-1 rounded-full bg-[var(--surface-sunken)] p-1",
+      "inline-flex items-center gap-1 rounded-none bg-[var(--surface-sunken)] p-1",
       className
     )}
     {...props}
@@ -58,7 +58,7 @@ const TabsTrigger = React.forwardRef<
       ref={ref}
       value={value}
       className={cn(
-        "group relative z-10 inline-flex items-center justify-center rounded-full px-4 py-1.5",
+        "group relative z-10 inline-flex items-center justify-center rounded-none px-4 py-1.5",
         "text-sm font-medium whitespace-nowrap select-none",
         "text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)]",
         "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
@@ -69,7 +69,7 @@ const TabsTrigger = React.forwardRef<
       )}
       {...props}
     >
-      <span className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--brand)] opacity-0 group-data-[state=active]:opacity-100" />
+      <span className="pointer-events-none absolute inset-0 -z-10 rounded-none bg-[var(--brand)] opacity-0 group-data-[state=active]:opacity-100" />
       {children}
     </TabsPrimitive.Trigger>
   );
@@ -90,7 +90,7 @@ const TabsTriggerPill = React.forwardRef<
       ref={ref}
       value={value}
       className={cn(
-        "group relative z-10 inline-flex items-center justify-center rounded-full px-4 py-1.5",
+        "group relative z-10 inline-flex items-center justify-center rounded-none px-4 py-1.5",
         "text-sm font-medium whitespace-nowrap select-none cursor-pointer",
         "text-[var(--ink-muted)] transition-colors duration-[var(--duration-fast)]",
         "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
@@ -103,7 +103,7 @@ const TabsTriggerPill = React.forwardRef<
     >
       {/* Animated pill indicator behind active tab */}
       <span
-        className="pointer-events-none absolute inset-0 -z-10 rounded-full bg-[var(--brand)] opacity-0 data-[state=active]:opacity-100 group-data-[state=active]:opacity-100"
+        className="pointer-events-none absolute inset-0 -z-10 rounded-none bg-[var(--brand)] opacity-0 data-[state=active]:opacity-100 group-data-[state=active]:opacity-100"
         style={
           prefersReduced
             ? undefined
@@ -136,7 +136,7 @@ const TabsMotionList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex items-center gap-1 rounded-full bg-[var(--surface-sunken)] p-1",
+      "inline-flex items-center gap-1 rounded-none bg-[var(--surface-sunken)] p-1",
       className
     )}
     {...props}
@@ -165,7 +165,7 @@ const TabsMotionTrigger = React.forwardRef<
       ref={ref}
       value={value}
       className={cn(
-        "group relative z-10 inline-flex items-center justify-center rounded-full px-4 py-1.5",
+        "group relative z-10 inline-flex items-center justify-center rounded-none px-4 py-1.5",
         "text-sm font-medium whitespace-nowrap select-none cursor-pointer",
         "text-[var(--ink-muted)]",
         "transition-colors duration-[var(--duration-fast)]",
@@ -194,7 +194,7 @@ function TabActiveIndicator({
     <span className="absolute inset-0 -z-10 hidden group-data-[state=active]:block">
       <motion.span
         layoutId="tab-active-pill"
-        className="block h-full w-full rounded-full bg-[var(--brand)] shadow-[var(--shadow-md)]"
+        className="block h-full w-full rounded-none bg-[var(--brand)] "
         transition={
           prefersReduced
             ? { duration: 0 }
@@ -217,7 +217,7 @@ const TabsContent = React.forwardRef<
     ref={ref}
     className={cn(
       "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
-      "rounded-[var(--radius-lg)]",
+      "rounded-none",
       className
     )}
     {...props}

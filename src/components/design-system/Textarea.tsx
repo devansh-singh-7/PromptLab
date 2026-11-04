@@ -118,7 +118,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               .join(" ") || undefined
           }
           className={cn(
-            "w-full min-h-[80px] rounded-[var(--radius-lg)] border bg-[var(--input-bg)] text-[var(--ink)] placeholder:text-[var(--ink-faint)]",
+            "w-full min-h-[80px] rounded-none border bg-[var(--input-bg)] text-[var(--ink)] placeholder:text-[var(--ink-faint)]",
             "px-4 py-3 text-base",
             "transition-colors transition-shadow duration-[var(--duration-fast)]",
             "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
@@ -126,7 +126,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             "leading-[1.6]",
             autoResize && "resize-none overflow-hidden",
             hasError || isOverLimit
-              ? "border-coral-500 focus-visible:ring-[var(--attention-ring)]"
+              ? "border-[var(--attention-bg)]0 focus-visible:ring-[var(--attention-ring)]"
               : "border-[var(--input-border)]",
             className
           )}

@@ -9,6 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "check:theme": "node scripts/check-theme.mjs",
     "typecheck": "prisma generate && tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",

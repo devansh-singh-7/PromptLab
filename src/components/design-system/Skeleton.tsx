@@ -20,9 +20,9 @@ export interface SkeletonProps
 const skeletonVariants = cva("skeleton-shimmer", {
   variants: {
     variant: {
-      text: "h-4 w-full rounded-[var(--radius-sm)]",
-      circle: "size-10 rounded-full",
-      rectangle: "h-24 w-full rounded-[var(--radius-md)]",
+      text: "h-4 w-full rounded-none",
+      circle: "size-10 rounded-none",
+      rectangle: "h-24 w-full rounded-none",
     },
   },
   defaultVariants: {

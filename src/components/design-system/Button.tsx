@@ -37,9 +37,9 @@ function Spinner({ className }: { className?: string }) {
 const buttonVariants = cva(
   [
     "relative inline-flex items-center justify-center gap-2",
-    "rounded-full font-medium whitespace-nowrap select-none",
-    "transition-shadow transition-colors",
-    "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
+    "rounded-none border-2 border-[var(--border)] font-bold uppercase tracking-[0.08em] whitespace-nowrap select-none",
+    "transition-[filter,transform,background-color,border-color] duration-150",
+    "outline-none focus-visible:outline-3 focus-visible:outline-[var(--ink)] focus-visible:outline-offset-3",
     "disabled:pointer-events-none disabled:opacity-50",
     "leading-[1.6]", // Works for Latin + Devanagari
   ],
@@ -47,33 +47,24 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: [
-          "bg-[var(--brand)] text-[var(--ink-inverse)]",
-          "hover:bg-[var(--brand-hover)]",
-          "active:bg-[var(--brand-active)]",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]",
+          "bg-[var(--accent)] text-[var(--on-accent)]",
+          "hover:brightness-110 active:translate-y-px active:brightness-95",
         ],
         secondary: [
-          "bg-[var(--surface-raised)] text-[var(--ink)] border border-[var(--border)]",
-          "hover:bg-[var(--brand-muted)] hover:border-[var(--brand-ring)]",
-          "active:bg-purple-200",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]",
+          "bg-transparent text-[var(--ink)]",
+          "hover:brightness-110 active:translate-y-px active:brightness-95",
         ],
         ghost: [
-          "bg-transparent text-[var(--ink)]",
-          "hover:bg-[var(--surface-raised)]",
-          "active:bg-[var(--brand-muted)]",
+          "border-transparent bg-transparent text-[var(--ink)] underline underline-offset-4",
+          "hover:brightness-110 active:translate-y-px active:brightness-95",
         ],
         success: [
-          "bg-[var(--success)] text-white",
-          "hover:bg-mint-700",
-          "active:bg-mint-800",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-glow-mint)]",
+          "bg-[var(--success)] text-[var(--ink)]",
+          "hover:brightness-110 active:translate-y-px active:brightness-95",
         ],
         reward: [
-          "bg-[var(--reward)] text-white",
-          "hover:bg-gold-600",
-          "active:bg-gold-700",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-glow-gold)]",
+          "bg-[var(--reward)] text-[var(--ink)]",
+          "hover:brightness-110 active:translate-y-px active:brightness-95",
         ],
       },
       size: {
@@ -154,7 +145,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileTap={
           prefersReduced
             ? undefined
-            : { scale: 0.98, boxShadow: "var(--shadow-sm)" }
+            : { y: 1, filter: "brightness(0.94)" }
         }
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
       >

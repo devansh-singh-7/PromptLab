@@ -7,8 +7,9 @@ import {
   AnimatePresence,
   type HTMLMotionProps,
 } from "framer-motion";
-import { AlertCircle, ChevronDown, RefreshCw } from "lucide-react";
+import { ChevronDown, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/cn";
+import Mascot from "./Mascot";
 
 /* ─── Types ───────────────────────────────────────────────── */
 
@@ -80,69 +81,60 @@ const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
         animate="visible"
         role="alert"
         className={cn(
-          "flex flex-col items-center justify-center px-6 py-16 text-center",
+          "flex flex-col items-center justify-center px-6 py-14 text-center",
           className,
         )}
         {...props}
       >
-        {/* Error icon */}
-        <div
-          className={cn(
-            "mb-6 flex size-16 items-center justify-center",
-            "rounded-full bg-[var(--attention-bg)]",
-          )}
-        >
-          <AlertCircle
-            className="size-8 text-[var(--attention)]"
-            aria-hidden="true"
-          />
+        {/* Mascot in encouraging state */}
+        <div className="mb-5 flex items-center justify-center" data-mascot-slot>
+          <Mascot state="encourage" size="md" label="Pip is encouraging you" />
         </div>
 
         {/* Title */}
-        <h3 className="font-heading text-lg font-semibold leading-relaxed text-[var(--ink)]">
+        <h3 className="font-heading text-lg font-bold leading-snug text-[var(--ink)]">
           {title}
         </h3>
 
         {/* Description */}
         {description && (
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--ink-muted)]">
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
             {description}
           </p>
         )}
 
-        {/* Retry button */}
+        {/* Retry action */}
         {onRetry && (
-          <button
-            type="button"
-            onClick={onRetry}
-            className={cn(
-              "mt-6 inline-flex items-center gap-2 rounded-[var(--radius-md)] px-5 py-2.5",
-              "bg-[var(--attention)] text-white font-medium text-sm",
-              "shadow-[var(--shadow-sm)]",
-              "transition-all duration-150",
-              "hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5",
-              "active:scale-[0.98] active:shadow-[var(--shadow-sm)]",
-              "focus-ring",
-            )}
-          >
-            <RefreshCw className="size-4" aria-hidden="true" />
-            Try again
-          </button>
+          <div className="mt-6">
+            <button
+              type="button"
+              onClick={onRetry}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-none px-5 py-2.5",
+                "bg-[var(--brand)] text-white text-sm font-bold ",
+                "transition-transform hover:scale-[1.02] active:scale-[0.98]",
+                "focus-ring"
+              )}
+            >
+              <RefreshCw className="size-4" aria-hidden="true" />
+              Try again
+            </button>
+          </div>
         )}
 
         {/* Collapsible error details */}
         {errorDetails && (
-          <div className="mt-6 w-full max-w-lg">
+          <div className="mt-6 w-full max-w-md">
             <button
               type="button"
               onClick={() => setIsDetailsOpen((prev) => !prev)}
-              className={cn(
-                "inline-flex items-center gap-1.5 text-xs font-medium",
-                "text-[var(--ink-muted)] transition-colors hover:text-[var(--ink)]",
-                "focus-ring rounded-[var(--radius-sm)] px-2 py-1",
-              )}
               aria-expanded={isDetailsOpen}
+              className={cn(
+                "inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--ink-muted)]",
+                "hover:text-[var(--ink)] transition-colors focus-ring rounded-none px-2 py-1",
+              )}
             >
+              <span>{isDetailsOpen ? "Hide technical details" : "Show technical details"}</span>
               <ChevronDown
                 className={cn(
                   "size-3.5 transition-transform duration-200",
@@ -150,10 +142,9 @@ const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
                 )}
                 aria-hidden="true"
               />
-              {isDetailsOpen ? "Hide" : "Show"} error details
             </button>
 
-            <AnimatePresence>
+            <AnimatePresence initial={false}>
               {isDetailsOpen && (
                 <motion.div
                   variants={detailsVars}
@@ -164,10 +155,9 @@ const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
                 >
                   <pre
                     className={cn(
-                      "mt-2 w-full overflow-x-auto rounded-[var(--radius-md)] p-4 text-left",
-                      "bg-[var(--surface-sunken)] border border-[var(--border)]",
-                      "font-code text-xs leading-relaxed text-[var(--ink-muted)]",
-                      "whitespace-pre-wrap break-words",
+                      "mt-2 text-left text-xs font-code text-[var(--attention-text)]",
+                      "bg-[var(--attention-bg)] border border-[var(--attention)]",
+                      "rounded-none p-3 overflow-x-auto whitespace-pre-wrap break-all",
                     )}
                   >
                     {errorDetails}
@@ -177,9 +167,6 @@ const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
             </AnimatePresence>
           </div>
         )}
-
-        {/* Mascot slot for Pip */}
-        <div data-mascot-slot aria-hidden="true" />
       </motion.div>
     );
   },
@@ -187,3 +174,4 @@ const ErrorState = React.forwardRef<HTMLDivElement, ErrorStateProps>(
 ErrorState.displayName = "ErrorState";
 
 export default ErrorState;
+export { ErrorState };

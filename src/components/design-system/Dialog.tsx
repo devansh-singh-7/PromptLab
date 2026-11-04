@@ -84,7 +84,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         <DialogPrimitive.Overlay asChild>
           <motion.div
             className={cn(
-              "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm",
+              "fixed inset-0 z-50 bg-black/40",
               overlayClassName,
             )}
             variants={overlayVars}
@@ -98,8 +98,8 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
           <motion.div
             className={cn(
               "fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2",
-              "rounded-[var(--radius-2xl)] bg-[var(--surface)] p-6",
-              "shadow-[var(--shadow-xl)] border border-[var(--border)]",
+              "rounded-none bg-[var(--surface)] p-6",
+              " border border-[var(--border)]",
               "focus:outline-none",
               className,
             )}
@@ -112,7 +112,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
             <DialogPrimitive.Close
               className={cn(
                 "absolute right-4 top-4 inline-flex size-8 items-center justify-center",
-                "rounded-[var(--radius-sm)] text-[var(--ink-muted)]",
+                "rounded-none text-[var(--ink-muted)]",
                 "transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--ink)]",
                 "focus-ring",
               )}

@@ -4,9 +4,9 @@ import {
   ArrowRight,
   BookOpen,
   Check,
-  ChevronDown,
+  CircleCheckBig,
   Code2,
-  Flame,
+  Clock3,
   Layers3,
   Menu,
   Play,
@@ -22,12 +22,8 @@ import {
   Mascot,
   PathNode,
   ProgressRing,
-  StreakChip,
   ThemeToggle,
-  XPChip,
 } from "@/components/design-system";
-
-const words = ["Don't", "just", "use", "AI.", "Learn", "to", "master", "it."];
 
 const principles = [
   {
@@ -38,30 +34,86 @@ const principles = [
   },
   {
     title: "Practice",
-    copy: "Turn ideas into small challenges with feedback that teaches, not judges.",
+    copy: "Turn ideas into bite-sized challenges with feedback that teaches, not judges.",
     icon: Target,
     tone: "mint",
   },
   {
     title: "Experiment",
-    copy: "Try boldly in safe workspaces where mistakes become your next clue.",
+    copy: "Try boldly in isolated workspaces where mistakes become your next breakthrough.",
     icon: WandSparkles,
     tone: "gold",
   },
   {
     title: "Build",
-    copy: "Ship real web projects and learn to verify every AI-assisted decision.",
+    copy: "Ship real web projects and verify every AI-assisted code decision.",
     icon: Rocket,
     tone: "coral",
   },
 ] as const;
 
-const levels = [
-  { label: "Foundations", state: "completed" as const },
-  { label: "Frontend", state: "in-progress" as const, progress: 42 },
-  { label: "Full stack", state: "available" as const },
-  { label: "Debugging", state: "locked" as const },
-  { label: "Real-world", state: "locked" as const },
+type LearningLevel = {
+  label: string;
+  state: "locked" | "available" | "in-progress" | "completed";
+  progress: number;
+  eyebrow: string;
+  title: string;
+  description: string;
+  duration: string;
+  reward: string;
+};
+
+const levels: LearningLevel[] = [
+  {
+    label: "Foundations",
+    state: "completed",
+    progress: 100,
+    eyebrow: "Level 1 · Complete",
+    title: "Prompt fundamentals unlocked",
+    description: "You learned how role, context, constraints, and examples work together.",
+    duration: "8 challenges finished",
+    reward: "+240 XP earned",
+  },
+  {
+    label: "Frontend",
+    state: "in-progress",
+    progress: 45,
+    eyebrow: "Level 2 · In progress",
+    title: "Build a responsive component brief",
+    description: "Give an AI enough product context to create a polished, accessible UI on the first pass.",
+    duration: "5 min · Challenge 4 of 8",
+    reward: "+80 XP waiting",
+  },
+  {
+    label: "Full stack",
+    state: "available",
+    progress: 0,
+    eyebrow: "Level 3 · Ready when you are",
+    title: "Plan your first full-stack flow",
+    description: "Map user intent to data, endpoints, and an interface that handles real-world states.",
+    duration: "Unlock after Frontend",
+    reward: "+320 XP to earn",
+  },
+  {
+    label: "Debugging",
+    state: "locked",
+    progress: 0,
+    eyebrow: "Level 4 · Locked",
+    title: "Diagnose AI-generated code",
+    description: "Practice turning confusing symptoms into focused debugging prompts and test cases.",
+    duration: "Complete Full stack first",
+    reward: "A new debugging badge",
+  },
+  {
+    label: "Real-world",
+    state: "locked",
+    progress: 0,
+    eyebrow: "Level 5 · Locked",
+    title: "Ship with confidence",
+    description: "Bring every prompt skill together in production-style projects and review loops.",
+    duration: "Complete Debugging first",
+    reward: "PromptLab mastery badge",
+  },
 ];
 
 function Reveal({
@@ -74,187 +126,108 @@ function Reveal({
   delay?: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.18 });
+  const inView = useInView(ref, { once: true, amount: 0.15 });
   const reduced = useReducedMotion();
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={reduced ? false : { opacity: 0, y: 22 }}
+      initial={reduced ? false : { opacity: 0, y: 18 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>
   );
 }
 
-function PromptUpgrade() {
-  const [strong, setStrong] = useState(false);
-  const reduced = useReducedMotion();
-  const pieces = ["role", "context", "constraints", "output format"];
-
-  return (
-    <div className="prompt-demo-wrap">
-      <motion.div
-        className="prompt-orb prompt-orb-one"
-        animate={reduced ? undefined : { y: [0, -12, 0], x: [0, 7, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="prompt-orb prompt-orb-two"
-        animate={reduced ? undefined : { y: [0, 10, 0], x: [0, -8, 0] }}
-        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 0.7 }}
-      />
-      <motion.div
-        className="prompt-demo-card"
-        initial={reduced ? false : { opacity: 0, scale: 0.94, y: 18 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 0.65, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="prompt-demo-top">
-          <div>
-            <p className="mini-kicker">Prompt upgrade</p>
-            <h2>Make your next prompt click.</h2>
-          </div>
-          <button
-            type="button"
-            className={`upgrade-toggle ${strong ? "is-strong" : ""}`}
-            onClick={() => setStrong((value) => !value)}
-            aria-pressed={strong}
-          >
-            <span>{strong ? "Strong" : "Weak"}</span>
-            <span className="toggle-dot" />
-          </button>
-        </div>
-        <div className="prompt-demo-body">
-          <div className={`prompt-copy ${strong ? "is-strong" : ""}`}>
-            <span className="prompt-label">{strong ? "A clear brief" : "A vague ask"}</span>
-            <p>{strong ? "Act as a senior frontend mentor. Build a responsive portfolio for a junior developer using semantic HTML, accessible controls, and a component outline before code." : "make me a website"}</p>
-          </div>
-          <div className="prompt-score">
-            <ProgressRing value={strong ? 92 : 28} size={104} strokeWidth={8} aria-label={`Prompt score ${strong ? 92 : 28}%`} />
-            <span>prompt<br />clarity</span>
-          </div>
-        </div>
-        <div className="prompt-pieces" aria-label="Prompt ingredients">
-          {pieces.map((piece, index) => (
-            <motion.span
-              key={piece}
-              className={`prompt-piece ${strong ? "is-lit" : ""}`}
-              animate={strong && !reduced ? { opacity: [0.55, 1], y: [4, 0] } : undefined}
-              transition={{ delay: index * 0.12, duration: 0.28 }}
-            >
-              {strong && <Check size={13} strokeWidth={3} />}
-              {piece}
-            </motion.span>
-          ))}
-        </div>
-        <div className="prompt-demo-footer">
-          <Mascot state={strong ? "cheer" : "think"} size="sm" label={strong ? "Pip is cheering" : "Pip is thinking"} />
-          <span>{strong ? "That’s a prompt with a point of view." : "Pip sees a few missing pieces."}</span>
-        </div>
-      </motion.div>
-      <motion.div className="float-chip float-chip-xp" animate={reduced ? undefined : { y: [0, -9, 0] }} transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut" }}>
-        <XPChip amount={50} />
-      </motion.div>
-      <motion.div className="float-chip float-chip-streak" animate={reduced ? undefined : { y: [0, 8, 0] }} transition={{ duration: 5.2, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}>
-        <StreakChip count={3} active />
-      </motion.div>
-      <motion.span className="float-chip level-float" animate={reduced ? undefined : { y: [0, -6, 0] }} transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut", delay: 1 }}>
-        <Sparkles size={14} /> Level 2
-      </motion.span>
-    </div>
-  );
-}
-
-function MiniIllustration({ type }: { type: number }) {
-  return (
-    <div className={`mini-illustration mini-illustration-${type}`} aria-hidden="true">
-      {type === 1 && <><span /><span /><span /></>}
-      {type === 2 && <><i /><i /><i /><i /></>}
-      {type === 3 && <><b /><b /><b /></>}
-      {type === 4 && <><em /><em /><em /></>}
-    </div>
-  );
-}
-
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptRunning, setPromptRunning] = useState(false);
-  const reduced = useReducedMotion();
+  const [selectedLevel, setSelectedLevel] = useState("Frontend");
   const loginHref = "/login?next=%2Fdashboard";
+  const activeLevel = levels.find((level) => level.label === selectedLevel) ?? levels[1];
+  const isLockedLevel = activeLevel.state === "locked";
 
   return (
     <main className="landing-page" id="top">
-      <div className="landing-mesh" aria-hidden="true" />
+      {/* Navigation Header */}
       <header className="landing-header">
         <a className="brand-lockup" href="#top" aria-label="PromptLab home">
           <span className="brand-mark"><span /></span>
           <span>PromptLab</span>
         </a>
+
         <nav className={`landing-nav ${menuOpen ? "is-open" : ""}`} aria-label="Main navigation">
           <a href="#courses" onClick={() => setMenuOpen(false)}>Courses</a>
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#studio" onClick={() => setMenuOpen(false)}>Studio</a>
-          <div className="mobile-nav-actions">
-            <a className="landing-button landing-button-ghost" href={loginHref}>Log in</a>
-            <a className="landing-button landing-button-primary" href={loginHref}>Start learning <ArrowRight size={16} /></a>
-          </div>
+          <a href="/login" onClick={() => setMenuOpen(false)}>Log in</a>
         </nav>
+
         <div className="header-actions">
           <ThemeToggle />
-          <a className="landing-button landing-button-primary" href={loginHref}>Start learning <ArrowRight size={16} /></a>
+          <a className="landing-button landing-button-primary" href={loginHref}>
+            Start learning <ArrowRight size={16} />
+          </a>
+          <button
+            className="mobile-menu-button"
+            type="button"
+            onClick={() => setMenuOpen((value) => !value)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
-        <button className="mobile-menu-button" type="button" onClick={() => setMenuOpen((value) => !value)} aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen}>
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
       </header>
 
-      <section className="landing-hero landing-container">
+      {/* Hero Section */}
+      <section className="landing-hero landing-hero-solo landing-container">
         <div className="hero-copy">
-          <Reveal>
-            <span className="eyebrow-chip"><Sparkles size={14} /> Learn with intention</span>
-          </Reveal>
           <h1 aria-label="Don't just use AI. Learn to master it.">
-            {words.map((word, index) => (
-              <motion.span
-                key={`${word}-${index}`}
-                className={word === "master" ? "gradient-word" : ""}
-                initial={reduced ? false : { opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 + index * 0.055, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              >
-                {word}{" "}
-              </motion.span>
-            ))}
-            <svg className="hero-underline" viewBox="0 0 310 18" aria-hidden="true">
-              <motion.path d="M4 12 C70 4, 205 18, 306 6" initial={reduced ? false : { pathLength: 0, opacity: 0 }} animate={{ pathLength: 1, opacity: 1 }} transition={{ delay: 0.75, duration: 0.65, ease: "easeOut" }} />
-            </svg>
+            Don&apos;t just use AI. Learn to{" "}
+            <span className="gradient-word">
+              master it.
+              <svg className="hero-underline-curve" viewBox="0 0 160 12" fill="none" preserveAspectRatio="none">
+                <path d="M 2 8 C 45 2, 115 12, 158 4" stroke="#C43D00" strokeWidth="3.5" strokeLinecap="round" />
+              </svg>
+            </span>
           </h1>
-          <p className="hero-support">Explore prompt engineering through interactive courses, real-world challenges and specialized AI workspaces.</p>
+
           <div className="hero-actions">
-            <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>Start learning <ArrowRight size={18} /></a>
-            <a className="landing-button landing-button-secondary landing-button-large" href="#courses">Explore courses <ChevronDown size={17} /></a>
+            <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
+              Start learning <ArrowRight size={18} />
+            </a>
+            <a className="landing-button landing-button-secondary landing-button-large" href="#courses">
+              Explore path
+            </a>
           </div>
-          <div className="hero-proof"><span className="proof-avatars"><i /><i /><i /></span><span>Made for curious builders</span><span className="proof-dot" /><span>Learn at your pace</span></div>
+
+          <div className="hero-proof">
+            <span className="proof-avatars"><i /><i /><i /></span>
+            <span>Made for curious developers</span>
+            <span className="proof-dot" />
+            <span>Interactive feedback, no fluff</span>
+          </div>
         </div>
-        <div className="hero-visual"><PromptUpgrade /></div>
       </section>
 
+      {/* How it Works / Principles Section */}
       <section className="principles-section landing-container" id="how-it-works">
-        <span className="landing-anchor" id="courses" aria-hidden="true" />
         <Reveal className="section-heading">
           <span className="section-kicker">A better way to learn</span>
-          <h2>From blank page to <span>breakthrough.</span></h2>
-          <p>Every part of PromptLab is designed to help you move from “I wonder” to “I built it.”</p>
+          <h2>From blank prompt to <span>production code</span></h2>
+          <p>Every milestone is structured to turn prompt engineering into a reliable, repeatable craft.</p>
         </Reveal>
+
         <div className="principles-grid">
           {principles.map(({ title, copy, icon: Icon, tone }, index) => (
             <Reveal key={title} delay={index * 0.08}>
               <article className={`principle-card tone-${tone}`}>
-                <div className="principle-top"><span className="icon-chip"><Icon size={20} /></span><span className="card-arrow"><ArrowRight size={17} /></span></div>
-                <MiniIllustration type={index + 1} />
+                <div className="principle-top">
+                  <span className="icon-chip"><Icon size={22} /></span>
+                </div>
                 <h3>{title}</h3>
                 <p>{copy}</p>
               </article>
@@ -263,58 +236,245 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="path-section landing-container">
+      {/* Learning Path Preview Section */}
+      <section className="path-section landing-container" id="courses">
         <Reveal className="section-heading path-heading">
-          <div><span className="section-kicker">Your learning path</span><h2>Keep going. <span>See where it leads.</span></h2></div>
-          <a className="text-link" href="#courses">View the roadmap <ArrowRight size={16} /></a>
+          <div>
+            <span className="section-kicker">Learning journey</span>
+            <h2>Web Development <span>Path</span></h2>
+            <p>From foundational mental models to production architectures and debugging workflows.</p>
+          </div>
+          <a className="text-link" href={loginHref}>
+            View curriculum <ArrowRight size={16} />
+          </a>
         </Reveal>
+
         <Reveal>
           <div className="path-preview">
-            <div className="path-preview-copy"><span className="eyebrow-chip small">Available first</span><h3 aria-label="Web Development learning path">Web Development</h3><p>Five levels of practical prompt engineering, from your first clear ask to a complete AI-assisted build.</p><div className="path-meta"><ProgressRing value={24} size={52} strokeWidth={5} /><span><strong>Level 1 of 5</strong><small>4 lessons until your next milestone</small></span></div></div>
-            <div className="trail-map" aria-label="Five-level Web Development learning path">
-              <svg className="trail-line" viewBox="0 0 540 190" preserveAspectRatio="none" aria-hidden="true"><motion.path d="M20 140 C90 140 70 42 160 48 S240 155 315 126 S405 25 520 45" initial={reduced ? false : { pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, ease: "easeOut" }} /></svg>
-              {levels.map((level, index) => (
-                <motion.div key={level.label} className={`trail-node trail-node-${index + 1}`} initial={reduced ? false : { opacity: 0, scale: 0.5 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.15, type: "spring", stiffness: 280, damping: 18 }}>
-                  <PathNode state={level.state} progress={level.progress} size="md" label={level.label} />
+            <div className="path-preview-header">
+              <div>
+                <span className="eyebrow-chip"><Sparkles size={14} /> Active track</span>
+                <h3 aria-label="Web Development">Web Development</h3>
+                <p>Five levels of structured prompt engineering with live code verification at each step.</p>
+              </div>
+              <div className="path-meta">
+                <ProgressRing value={35} size={48} strokeWidth={4} />
+                <div>
+                  <strong>35% through your path</strong>
+                  <small>3 challenges down · your streak is warm</small>
+                </div>
+              </div>
+            </div>
+
+            <div className="path-progress-summary" aria-label="Learning path progress">
+              <div className="path-progress-copy">
+                <span>Next checkpoint</span>
+                <strong>Component briefs</strong>
+              </div>
+              <div className="path-progress-track" aria-hidden="true"><span /></div>
+              <span className="path-progress-count">3 / 8 complete</span>
+            </div>
+
+            <p className="trail-hint"><Sparkles size={14} /> Pick an unlocked milestone to see its mission.</p>
+
+            <div className="trail-row" role="list" aria-label="Path milestones">
+              <div className="trail-connector-line">
+                <div className="trail-connector-fill" />
+              </div>
+              {levels.map((level) => (
+                <div
+                  key={level.label}
+                  className={`trail-item ${selectedLevel === level.label ? "is-selected" : ""}`}
+                  role="listitem"
+                >
+                  <PathNode
+                    state={level.state}
+                    progress={level.progress}
+                    size="md"
+                    label={level.label}
+                    onClick={() => setSelectedLevel(level.label)}
+                  />
                   <span>{level.label}</span>
-                </motion.div>
+                  {level.state === "in-progress" && <small>You're here</small>}
+                </div>
               ))}
+            </div>
+
+            <motion.div
+              key={activeLevel.label}
+              className={`path-mission ${isLockedLevel ? "is-locked" : ""}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              aria-live="polite"
+            >
+              <div className="mission-guide">
+                <Mascot
+                  state={isLockedLevel ? "think" : activeLevel.state === "completed" ? "cheer" : "encourage"}
+                  size="sm"
+                  label={isLockedLevel ? "Pip is thinking" : "Pip is encouraging you"}
+                />
+              </div>
+              <div className="mission-content">
+                <span className="mission-eyebrow">{activeLevel.eyebrow}</span>
+                <h4>{activeLevel.title}</h4>
+                <p>{activeLevel.description}</p>
+                <div className="mission-meta">
+                  <span><Clock3 size={14} /> {activeLevel.duration}</span>
+                  <span><CircleCheckBig size={14} /> {activeLevel.reward}</span>
+                </div>
+              </div>
+              {isLockedLevel ? (
+                <span className="mission-locked-note">Keep going to unlock</span>
+              ) : (
+                <a className="mission-action" href={loginHref}>
+                  {activeLevel.state === "completed" ? "Review level" : activeLevel.state === "available" ? "Preview level" : "Continue mission"}
+                  <ArrowRight size={16} />
+                </a>
+              )}
+            </motion.div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Studio Preview Section */}
+      <section className="studio-section landing-container" id="studio">
+        <Reveal className="studio-heading">
+          <div>
+            <span className="section-kicker">Interactive workbench</span>
+            <h2>The PromptLab <span>Studio</span></h2>
+            <p>A focused environment where you prompt, inspect generated code, and verify behavior in real time.</p>
+          </div>
+          <span className="studio-status">
+            <i /> Live sandbox ready
+          </span>
+        </Reveal>
+
+        <Reveal delay={0.06}>
+          <div className="studio-window">
+            <div className="studio-toolbar">
+              <span className="window-dots"><i /><i /><i /></span>
+              <span className="studio-file"><Code2 size={15} /> prompt-workspace.tsx</span>
+              <span className="studio-toolbar-label">PromptLab Studio v1.0</span>
+            </div>
+
+            <div className="studio-grid">
+              <div className="studio-panel prompt-panel">
+                <span className="panel-label">1. Natural Language Prompt</span>
+                <p>
+                  Create an accessible, responsive navigation bar with a subtle blur backdrop, mobile hamburger sheet, and keyboard escape handling.
+                </p>
+                <button
+                  className="run-button"
+                  type="button"
+                  onClick={() => {
+                    setPromptRunning(true);
+                    window.setTimeout(() => setPromptRunning(false), 1200);
+                  }}
+                  aria-live="polite"
+                >
+                  <Play size={14} fill="currentColor" />
+                  {promptRunning ? "Generating preview..." : "Run in sandbox"}
+                </button>
+              </div>
+
+              <div className="studio-panel code-panel">
+                <span className="panel-label">2. Verified Code Output</span>
+                <div className="code-lines">
+                  <i style={{ width: "85%" }} />
+                  <i style={{ width: "62%", marginLeft: "14px" }} />
+                  <i style={{ width: "74%", marginLeft: "14px" }} />
+                  <i style={{ width: "48%", marginLeft: "28px" }} />
+                  <i style={{ width: "70%" }} />
+                  <i style={{ width: "38%" }} />
+                </div>
+              </div>
+
+              <div className="studio-panel preview-panel">
+                <span className="panel-label">3. Live Component Render</span>
+                <div className="mock-preview">
+                  <div className="mock-nav" />
+                  <div className="mock-hero">
+                    <span />
+                    <b />
+                    <i />
+                  </div>
+                  <div className="mock-cards">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                </div>
+              </div>
+
+              <div className="studio-feedback-bar">
+                <span className="feedback-icon"><Check size={16} /></span>
+                <span><strong>Rubric Evaluation:</strong> Excellent constraint specification and explicit state considerations.</span>
+                <b>96/100</b>
+              </div>
             </div>
           </div>
         </Reveal>
       </section>
 
-      <section className="studio-section landing-container" id="studio">
-        <Reveal className="studio-heading"><div><span className="section-kicker">The PromptLab studio</span><h2>Think it. <span>Try it. See it.</span></h2><p>A focused workbench for turning your best prompts into real, working ideas.</p></div><span className="studio-status"><i /> Live preview ready</span></Reveal>
-        <Reveal delay={0.08}><div className="studio-window">
-          <div className="studio-toolbar"><span className="window-dots"><i /><i /><i /></span><span className="studio-file"><Code2 size={14} /> landing-page.tsx</span><span className="studio-toolbar-label">PromptLab Studio</span></div>
-          <div className="studio-grid">
-            <div className="studio-panel prompt-panel"><span className="panel-label">Your prompt</span><motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}>Create a welcoming hero section for a learning app. Use a warm purple palette, a clear call to action, and a card that celebrates progress.</motion.p><button className="run-button" type="button" onClick={() => { setPromptRunning(true); window.setTimeout(() => setPromptRunning(false), 1200); }} aria-live="polite"><Play size={14} fill="currentColor" /> {promptRunning ? "Building preview..." : "Run prompt"}</button></div>
-            <div className="studio-panel code-panel"><span className="panel-label">Generated structure</span><div className="code-lines"><i /><i /><i /><i /><i /><i /></div><span className="code-cursor" /></div>
-            <div className="studio-panel preview-panel"><span className="panel-label">Live preview</span><div className="mock-preview"><div className="mock-nav" /><div className="mock-hero"><span /><b /><i /></div><div className="mock-cards"><i /><i /><i /></div></div></div>
-            <div className="studio-feedback"><span className="feedback-icon"><Check size={16} /></span><span><strong>Nice direction.</strong> Clear goal and a helpful visual brief.</span><b>92</b></div>
-          </div>
-        </div></Reveal>
-      </section>
-
+      {/* Domain Exploration Section */}
       <section className="domains-section landing-container">
-        <Reveal className="section-heading"><span className="section-kicker">One lab, many directions</span><h2>Start where you are. <span>Grow from there.</span></h2></Reveal>
+        <Reveal className="section-heading">
+          <span className="section-kicker">Expanding horizon</span>
+          <h2>Specialized <span>Learning Tracks</span></h2>
+        </Reveal>
+
         <div className="domain-grid">
-          <Reveal><article className="domain-card domain-active"><div className="domain-icon"><Code2 size={25} /></div><div><span className="domain-status">Available first</span><h3>Web Development</h3><p>Build thoughtful websites, apps, and a portfolio you’re proud to share.</p></div><ArrowRight size={19} /></article></Reveal>
-          {["Data & analytics", "Product & design", "Automation"].map((domain, index) => <Reveal key={domain} delay={(index + 1) * 0.08}><article className="domain-card domain-muted"><div className="domain-icon"><Layers3 size={23} /></div><div><span className="domain-status">Coming later</span><h3>{domain}</h3><p>New learning paths are taking shape in the lab.</p></div><span className="domain-lock">Soon</span></article></Reveal>)}
+          <article className="domain-card domain-active">
+            <div className="domain-icon"><Code2 size={26} /></div>
+            <div>
+              <span className="domain-status">Available now</span>
+              <h3>Full-Stack Web Track</h3>
+              <p>Full-stack engineering with Next.js, TypeScript, API contracts, and Tailwind.</p>
+            </div>
+            <ArrowRight size={20} />
+          </article>
+
+          {["Data & Analytics", "Product & Architecture", "Automation & APIs"].map((domain) => (
+            <article key={domain} className="domain-card">
+              <div className="domain-icon"><Layers3 size={24} /></div>
+              <div>
+                <span className="domain-status" style={{ color: "var(--ink-muted)" }}>Coming soon</span>
+                <h3>{domain}</h3>
+                <p>Structured problem sets and dedicated AI environments currently in curriculum design.</p>
+              </div>
+              <span className="domain-lock">Roadmap</span>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="achievements-section landing-container">
-        <Reveal><div className="achievement-strip"><div className="achievement-intro"><span className="section-kicker">Small wins, real momentum</span><h2>Collect moments<br />worth <span>celebrating.</span></h2></div><div className="achievement-badges"><div className="achievement-badge badge-purple"><Sparkles size={25} /><b>First spark</b><small>Begin your journey</small></div><div className="achievement-badge badge-gold"><Flame size={25} /><b>On a roll</b><small>Keep your streak</small></div><div className="achievement-badge badge-mint"><Target size={25} /><b>Prompt crafter</b><small>Make it clearer</small></div></div></div></Reveal>
+      {/* Final Call to Action */}
+      <section className="final-cta landing-container">
+        <Reveal>
+          <div className="cta-mascot">
+            <Mascot state="wave" size="lg" label="Pip is waving" />
+          </div>
+          <span className="section-kicker">Get started today</span>
+          <h2>Ready to level up your <span>prompting?</span></h2>
+          <p>Join developers who treat AI as a powerful collaborative instrument, not a black box.</p>
+          <a className="landing-button landing-button-primary landing-button-large" href={loginHref}>
+            Start learning free <ArrowRight size={18} />
+          </a>
+        </Reveal>
       </section>
 
-      <section className="final-cta landing-container" id="start">
-        <div className="cta-glow" aria-hidden="true" />
-        <Reveal><div className="cta-mascot"><Mascot state="wave" size="lg" label="Pip is waving hello" /></div><span className="section-kicker">Your next idea is waiting</span><h2>Ready to make AI<br /><span>work for you?</span></h2><p>Start with one prompt. Leave with a new way to think.</p><a className="landing-button landing-button-primary landing-button-large" href={loginHref}>Start learning <ArrowRight size={18} /></a></Reveal>
-      </section>
-
-      <footer className="landing-footer landing-container"><a className="brand-lockup" href="#top"><span className="brand-mark"><span /></span><span>PromptLab</span></a><span>Learn. Practice. Experiment. Build.</span><div><a href="#courses">Courses</a><a href="#how-it-works">How it works</a><a href="/login">Log in</a></div></footer>
+      {/* Footer */}
+      <footer className="landing-footer landing-container">
+        <div className="brand-lockup">
+          <span className="brand-mark"><span /></span>
+          <span>PromptLab</span>
+        </div>
+        <div>
+          <a href="#top">Back to top</a>
+          <a href={loginHref}>Sign in</a>
+        </div>
+      </footer>
     </main>
   );
 }

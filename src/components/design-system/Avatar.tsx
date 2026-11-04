@@ -9,8 +9,8 @@ import { cn } from "@/lib/cn";
 const avatarVariants = cva(
   [
     "relative inline-flex items-center justify-center",
-    "rounded-full overflow-hidden",
-    "bg-purple-100 dark:bg-purple-900/40",
+    "rounded-none overflow-hidden",
+    "bg-[var(--select-tint)] dark:bg-[var(--select)]/40",
     "select-none shrink-0",
   ],
   {
@@ -29,8 +29,8 @@ const avatarVariants = cva(
 
 const onlineDotVariants = cva(
   [
-    "absolute block rounded-full",
-    "bg-mint-500",
+    "absolute block rounded-none",
+    "bg-[var(--success)]",
     "ring-2 ring-[var(--surface)]",
   ],
   {
@@ -123,7 +123,7 @@ const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
           />
         ) : (
           <span
-            className="font-heading font-semibold text-purple-700 dark:text-purple-300"
+            className="font-heading font-semibold text-[var(--select)] dark:text-[var(--select)]"
             aria-hidden="true"
           >
             {fallback}

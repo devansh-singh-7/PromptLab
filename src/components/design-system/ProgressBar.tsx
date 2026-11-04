@@ -7,7 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 /* ── Variant Definitions ────────────────────────────────────── */
 
 const trackVariants = cva(
-  "w-full overflow-hidden rounded-full bg-[var(--surface-sunken)]",
+  "w-full overflow-hidden border border-[var(--border)] bg-[var(--surface-sunken)]",
   {
     variants: {
       height: {
@@ -65,10 +65,7 @@ export default function ProgressBar(props: ProgressBarProps) {
 
   const isComplete = clampedValue >= 100;
 
-  // Colors: mint for complete, brand gradient for in-progress
-  const fillColor = isComplete
-    ? "bg-mint-500"
-    : "bg-gradient-to-r from-purple-500 to-purple-400";
+  const fillColor = isComplete ? "bg-[var(--success)]" : "bg-[var(--accent)]";
 
   if (props.mode === "segmented") {
     const { segments, filledSegments } = props;
@@ -98,15 +95,15 @@ export default function ProgressBar(props: ProgressBarProps) {
             const segmentComplete = clampedFilled >= segments;
             const segmentColor = isFilled
               ? segmentComplete
-                ? "bg-mint-500"
-                : "bg-gradient-to-r from-purple-500 to-purple-400"
+                ? "bg-[var(--success)]"
+                : "bg-[var(--accent)]"
               : "bg-[var(--surface-sunken)]";
 
             return (
               <motion.div
                 key={i}
                 className={cn(
-                  "flex-1 rounded-full transition-colors",
+                  "flex-1 border border-[var(--border)] transition-colors",
                   height === "sm" ? "h-1.5" : height === "lg" ? "h-4" : "h-2.5",
                   segmentColor
                 )}
@@ -144,7 +141,7 @@ export default function ProgressBar(props: ProgressBarProps) {
         className={trackVariants({ height })}
       >
         <motion.div
-          className={cn("h-full rounded-full", fillColor)}
+          className={cn("h-full", fillColor)}
           initial={reducedMotion ? false : { width: "0%" }}
           animate={{ width: `${clampedValue}%` }}
           transition={{

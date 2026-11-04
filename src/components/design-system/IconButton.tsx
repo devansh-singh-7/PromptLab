@@ -13,7 +13,7 @@ import { cn } from "@/lib/cn";
 const iconButtonVariants = cva(
   [
     "relative inline-flex items-center justify-center",
-    "rounded-full shrink-0 select-none",
+    "rounded-none shrink-0 select-none",
     "transition-shadow transition-colors",
     "outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--surface)]",
     "disabled:pointer-events-none disabled:opacity-50",
@@ -25,13 +25,13 @@ const iconButtonVariants = cva(
           "bg-[var(--brand)] text-[var(--ink-inverse)]",
           "hover:bg-[var(--brand-hover)]",
           "active:bg-[var(--brand-active)]",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]",
+          " hover:",
         ],
         secondary: [
           "bg-[var(--surface-raised)] text-[var(--ink)] border border-[var(--border)]",
           "hover:bg-[var(--brand-muted)] hover:border-[var(--brand-ring)]",
-          "active:bg-purple-200",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]",
+          "active:bg-[var(--select-tint)]",
+          " hover:",
         ],
         ghost: [
           "bg-transparent text-[var(--ink)]",
@@ -40,15 +40,15 @@ const iconButtonVariants = cva(
         ],
         success: [
           "bg-[var(--success)] text-white",
-          "hover:bg-mint-700",
-          "active:bg-mint-800",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-glow-mint)]",
+          "hover:bg-[var(--success)]",
+          "active:bg-[var(--success)]",
+          " hover:",
         ],
         reward: [
           "bg-[var(--reward)] text-white",
-          "hover:bg-gold-600",
-          "active:bg-gold-700",
-          "shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-glow-gold)]",
+          "hover:bg-[var(--reward)]",
+          "active:bg-[var(--reward)]",
+          " hover:",
         ],
       },
       size: {
@@ -92,7 +92,7 @@ const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         whileTap={
           prefersReduced
             ? undefined
-            : { scale: 0.98, boxShadow: "var(--shadow-sm)" }
+            : { y: 1, filter: "brightness(0.94)" }
         }
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         {...props}

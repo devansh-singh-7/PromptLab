@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
-import { PackageOpen } from "lucide-react";
 import { cn } from "@/lib/cn";
+import Mascot, { type MascotState } from "./Mascot";
 
 /* ─── Types ───────────────────────────────────────────────── */
 
@@ -14,26 +14,12 @@ export type EmptyStateProps = Omit<HTMLMotionProps<"div">, "children"> & {
   description?: string;
   /** Action area — typically a Button */
   action?: React.ReactNode;
-  /** Custom illustration. Defaults to a muted icon placeholder. */
+  /** Custom mascot state (default: "think") */
+  mascotState?: MascotState;
+  /** Custom illustration. If omitted, renders Pip with mascotState. */
   illustration?: React.ReactNode;
   children?: React.ReactNode;
 };
-
-/* ─── Default illustration ────────────────────────────────── */
-
-function DefaultIllustration() {
-  return (
-    <div
-      className={cn(
-        "flex size-20 items-center justify-center",
-        "rounded-[var(--radius-xl)] bg-[var(--surface-raised)]",
-        "border border-dashed border-[var(--border)]",
-      )}
-    >
-      <PackageOpen className="size-8 text-[var(--ink-faint)]" aria-hidden="true" />
-    </div>
-  );
-}
 
 /* ─── Motion ──────────────────────────────────────────────── */
 
@@ -55,7 +41,15 @@ const staticVariant = {
 
 const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
   (
-    { className, title, description, action, illustration, ...props },
+    {
+      className,
+      title,
+      description,
+      action,
+      mascotState = "think",
+      illustration,
+      ...props
+    },
     ref,
   ) => {
     const prefersReducedMotion = useReducedMotion();
@@ -68,31 +62,30 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
         initial="hidden"
         animate="visible"
         className={cn(
-          "flex flex-col items-center justify-center px-6 py-16 text-center",
+          "flex flex-col items-center justify-center px-6 py-14 text-center",
           className,
         )}
         {...props}
       >
-        {/* Illustration */}
-        <div className="mb-6">{illustration ?? <DefaultIllustration />}</div>
+        {/* Mascot / Illustration */}
+        <div className="mb-5 flex items-center justify-center" data-mascot-slot>
+          {illustration ?? <Mascot state={mascotState} size="lg" label={`Pip is ${mascotState}ing`} />}
+        </div>
 
         {/* Title */}
-        <h3 className="font-heading text-lg font-semibold leading-relaxed text-[var(--ink)]">
+        <h3 className="font-heading text-lg font-bold leading-snug text-[var(--ink)]">
           {title}
         </h3>
 
         {/* Description */}
         {description && (
-          <p className="mt-2 max-w-md text-sm leading-relaxed text-[var(--ink-muted)]">
+          <p className="mt-2 max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
             {description}
           </p>
         )}
 
         {/* Action */}
         {action && <div className="mt-6">{action}</div>}
-
-        {/* Mascot slot for Pip */}
-        <div data-mascot-slot aria-hidden="true" />
       </motion.div>
     );
   },
@@ -100,3 +93,4 @@ const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
 EmptyState.displayName = "EmptyState";
 
 export default EmptyState;
+export { EmptyState };

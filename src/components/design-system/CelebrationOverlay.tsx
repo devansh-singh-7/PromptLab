@@ -1,10 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/cn";
-import confetti from "canvas-confetti";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Sparkles, X } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 /* ── Types ──────────────────────────────────────────────────── */
 
@@ -40,55 +39,6 @@ export default function CelebrationOverlay({
   className,
 }: CelebrationOverlayProps) {
   const reducedMotion = useReducedMotion();
-  const hasFiredRef = useRef(false);
-
-  // Fire confetti burst (respects reduced motion)
-  const fireConfetti = useCallback(() => {
-    if (reducedMotion || hasFiredRef.current) return;
-    hasFiredRef.current = true;
-
-    const duration = 2500;
-    const end = Date.now() + duration;
-
-    const frame = () => {
-      confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0, y: 0.7 },
-        colors: ["#7655e8", "#29c5a4", "#ffca55", "#f25c41"],
-      });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1, y: 0.7 },
-        colors: ["#7655e8", "#29c5a4", "#ffca55", "#f25c41"],
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    };
-
-    // Initial big burst
-    confetti({
-      particleCount: 80,
-      spread: 100,
-      origin: { y: 0.6 },
-      colors: ["#7655e8", "#29c5a4", "#ffca55", "#f25c41"],
-    });
-
-    requestAnimationFrame(frame);
-  }, [reducedMotion]);
-
-  // Fire on open
-  useEffect(() => {
-    if (open) {
-      hasFiredRef.current = false;
-      fireConfetti();
-    }
-  }, [open, fireConfetti]);
 
   // Close on Escape
   useEffect(() => {
@@ -121,11 +71,11 @@ export default function CelebrationOverlay({
           onClick={onClose}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-[var(--surface-overlay)] backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-[var(--surface-overlay)]" />
 
           {/* Content card */}
           <motion.div
-            className="relative z-10 mx-4 flex max-w-sm flex-col items-center gap-5 rounded-2xl bg-[var(--surface)] p-8 text-center shadow-[var(--shadow-xl)]"
+            className="relative z-10 mx-4 flex max-w-sm flex-col items-center gap-5 rounded-none border-2 border-[var(--border)] bg-[var(--surface)] p-8 text-center"
             initial={reducedMotion ? false : { scale: 0.8, y: 30 }}
             animate={{ scale: 1, y: 0 }}
             exit={reducedMotion ? undefined : { scale: 0.9, y: 20 }}
@@ -136,19 +86,33 @@ export default function CelebrationOverlay({
             }}
             onClick={(e) => e.stopPropagation()}
           >
+            <div className="pointer-events-none absolute inset-x-8 top-4 flex justify-between" aria-hidden="true">
+              {[0, 1, 2, 3, 4].map((pixel) => (
+                <motion.i
+                  key={pixel}
+                  className={cn(
+                    "size-2",
+                    pixel % 2 === 0 ? "bg-[var(--accent)]" : "bg-[var(--select)]",
+                  )}
+                  initial={reducedMotion ? false : { y: 16, opacity: 0 }}
+                  animate={reducedMotion ? undefined : { y: [16, -8, 8], opacity: [0, 1, 0] }}
+                  transition={{ duration: 0.8, delay: pixel * 0.06 }}
+                />
+              ))}
+            </div>
             {/* Close button */}
             <button
               type="button"
               onClick={onClose}
               aria-label="Close celebration"
-              className="absolute right-3 top-3 rounded-lg p-1.5 text-[var(--ink-muted)] transition-colors hover:bg-[var(--surface-sunken)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]"
+              className="absolute right-3 top-3 rounded-none p-1.5 text-[var(--ink-muted)] transition-colors hover:bg-[var(--surface-sunken)] hover:text-[var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]"
             >
               <X size={18} aria-hidden />
             </button>
 
             {/* Icon */}
             <motion.div
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-purple-400 text-white shadow-[var(--shadow-glow)]"
+              className="flex h-16 w-16 items-center justify-center rounded-none bg-[var(--accent)]   text-white "
               initial={reducedMotion ? false : { rotate: -15, scale: 0 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{
@@ -178,7 +142,7 @@ export default function CelebrationOverlay({
               <div className="flex items-center gap-4">
                 {xpEarned !== undefined && (
                   <motion.div
-                    className="flex flex-col items-center gap-0.5 rounded-xl bg-[var(--reward-bg)] px-4 py-2"
+                    className="flex flex-col items-center gap-0.5 rounded-none bg-[var(--reward-bg)] px-4 py-2"
                     initial={reducedMotion ? false : { y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.3 }}
@@ -194,7 +158,7 @@ export default function CelebrationOverlay({
 
                 {levelUp && (
                   <motion.div
-                    className="flex flex-col items-center gap-0.5 rounded-xl bg-[var(--brand-muted)] px-4 py-2"
+                    className="flex flex-col items-center gap-0.5 rounded-none bg-[var(--brand-muted)] px-4 py-2"
                     initial={reducedMotion ? false : { y: 10, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ delay: 0.4 }}
@@ -214,7 +178,7 @@ export default function CelebrationOverlay({
             <button
               type="button"
               onClick={onClose}
-              className="mt-1 rounded-xl bg-gradient-to-r from-purple-500 to-purple-400 px-6 py-2.5 text-sm font-semibold text-white shadow-[var(--shadow-md)] transition-all hover:shadow-[var(--shadow-lg)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]"
+              className="mt-1 rounded-none bg-[var(--accent)] px-6 py-2.5 text-sm font-semibold text-white  transition-all hover: active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]"
             >
               Continue
             </button>

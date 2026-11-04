@@ -16,7 +16,7 @@ import { cn } from "@/lib/cn";
 const chipVariants = cva(
   [
     "inline-flex items-center gap-1.5",
-    "rounded-[var(--radius-full)]",
+    "rounded-none",
     "px-3 py-1",
     "text-sm font-medium leading-snug",
     "select-none whitespace-nowrap",
@@ -27,15 +27,15 @@ const chipVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-purple-100 text-purple-800 hover:bg-purple-200 dark:bg-purple-900/40 dark:text-purple-200 dark:hover:bg-purple-900/60",
+          "bg-[var(--select-tint)] text-[var(--select)] hover:bg-[var(--select-tint)] dark:bg-[var(--select)]/40 dark:text-[var(--select-tint)] dark:hover:bg-[var(--select)]/60",
         success:
-          "bg-[var(--success-bg)] text-[var(--success-text)] hover:bg-mint-100 dark:hover:bg-mint-900/30",
+          "bg-[var(--success-bg)] text-[var(--success-text)] hover:bg-[var(--success-bg)] dark:hover:bg-[var(--success-bg)]",
         reward:
-          "bg-[var(--reward-bg)] text-[var(--reward-text)] hover:bg-gold-100 dark:hover:bg-gold-900/30",
+          "bg-[var(--reward-bg)] text-[var(--reward-text)] hover:bg-[var(--reward-bg)] dark:hover:bg-[var(--reward-bg)]",
         attention:
-          "bg-[var(--attention-bg)] text-[var(--attention-text)] hover:bg-coral-100 dark:hover:bg-coral-900/30",
+          "bg-[var(--attention-bg)] text-[var(--attention-text)] hover:bg-[var(--attention-bg)] dark:hover:bg-[var(--attention-bg)]",
         neutral:
-          "bg-navy-100 text-navy-700 hover:bg-navy-200 dark:bg-navy-700 dark:text-navy-200 dark:hover:bg-navy-600",
+          "bg-[var(--surface-sunken)] text-[var(--ink)] hover:bg-[var(--surface-sunken)] dark:bg-[var(--surface-raised)] dark:text-[var(--ink)] dark:hover:bg-[var(--surface-raised)]",
       },
     },
     defaultVariants: {
@@ -101,7 +101,7 @@ const Chip = forwardRef<HTMLSpanElement, ChipProps>(
             onClick={handleDismiss}
             className={cn(
               "ml-0.5 -mr-1 inline-flex items-center justify-center",
-              "size-4 rounded-full",
+              "size-4 rounded-none",
               "opacity-60 hover:opacity-100",
               "transition-opacity duration-[var(--duration-fast)]",
               "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--brand)]"

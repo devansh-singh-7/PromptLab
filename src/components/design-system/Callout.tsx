@@ -8,13 +8,13 @@ import type { ReactNode } from "react";
 /* ── Variant Definitions ────────────────────────────────────── */
 
 const calloutVariants = cva(
-  "relative rounded-lg border-l-4 px-4 py-3 text-sm leading-relaxed",
+  "relative rounded-none border-l-4 px-4 py-3 text-sm leading-relaxed",
   {
     variants: {
       variant: {
-        tip: "border-l-purple-500 bg-[var(--brand-muted)] text-[var(--ink)]",
-        warning: "border-l-coral-500 bg-[var(--attention-bg)] text-[var(--attention-text)]",
-        "key-takeaway": "border-l-mint-500 bg-[var(--success-bg)] text-[var(--success-text)]",
+        tip: "border-l-[var(--select)] bg-[var(--brand-muted)] text-[var(--ink)]",
+        warning: "border-l-[var(--attention-bg)]0 bg-[var(--attention-bg)] text-[var(--attention-text)]",
+        "key-takeaway": "border-l-[var(--success)] bg-[var(--success-bg)] text-[var(--success-text)]",
       },
     },
     defaultVariants: {
@@ -42,17 +42,17 @@ const variantConfig = {
   tip: {
     icon: Lightbulb,
     defaultTitle: "Tip",
-    iconColor: "text-purple-500",
+    iconColor: "text-[var(--select)]",
   },
   warning: {
     icon: AlertTriangle,
     defaultTitle: "Warning",
-    iconColor: "text-coral-500",
+    iconColor: "text-[var(--attention-text)]",
   },
   "key-takeaway": {
     icon: Key,
     defaultTitle: "Key Takeaway",
-    iconColor: "text-mint-600",
+    iconColor: "text-[var(--success-text)]",
   },
 } as const;
 

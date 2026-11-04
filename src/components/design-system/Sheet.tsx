@@ -35,16 +35,16 @@ export type SheetCloseProps = DialogPrimitive.DialogCloseProps;
 const sheetVariants = cva(
   [
     "fixed z-50 flex flex-col",
-    "bg-[var(--surface)] border-[var(--border)] shadow-[var(--shadow-xl)]",
+    "bg-[var(--surface)] border-[var(--border)] ",
     "focus:outline-none",
   ],
   {
     variants: {
       side: {
-        right: "inset-y-0 right-0 border-l rounded-l-[var(--radius-2xl)]",
-        left: "inset-y-0 left-0 border-r rounded-r-[var(--radius-2xl)]",
+        right: "inset-y-0 right-0 border-l rounded-none",
+        left: "inset-y-0 left-0 border-r rounded-none",
         bottom:
-          "inset-x-0 bottom-0 border-t rounded-t-[var(--radius-2xl)] max-h-[85vh]",
+          "inset-x-0 bottom-0 border-t rounded-none max-h-[85vh]",
       },
     },
     defaultVariants: {
@@ -138,7 +138,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
         <DialogPrimitive.Overlay asChild>
           <motion.div
             className={cn(
-              "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm",
+              "fixed inset-0 z-50 bg-black/40",
               overlayClassName,
             )}
             variants={overlayVars}
@@ -160,7 +160,7 @@ const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
               <DialogPrimitive.Close
                 className={cn(
                   "inline-flex size-8 items-center justify-center",
-                  "rounded-[var(--radius-sm)] text-[var(--ink-muted)]",
+                  "rounded-none text-[var(--ink-muted)]",
                   "transition-colors hover:bg-[var(--surface-raised)] hover:text-[var(--ink)]",
                   "focus-ring",
                 )}

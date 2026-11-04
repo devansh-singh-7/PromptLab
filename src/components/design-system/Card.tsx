@@ -8,16 +8,16 @@ import { cn } from "@/lib/cn";
 /* ── Variant definitions ─────────────────────────────────────── */
 
 const cardVariants = cva(
-  "rounded-[var(--radius-2xl)] transition-shadow",
+  "rounded-none border-2 border-[var(--border)] transition-[filter,transform]",
   {
     variants: {
       variant: {
         default:
-          "bg-[var(--surface-raised)] shadow-[var(--shadow-md)]",
+          "bg-[var(--surface-raised)]",
         outlined:
-          "bg-[var(--surface)] border border-[var(--border)] shadow-none",
+          "bg-[var(--surface)]",
         elevated:
-          "bg-[var(--surface-raised)] shadow-[var(--shadow-lg)]",
+          "bg-[var(--surface-raised)]",
       },
     },
     defaultVariants: {
@@ -41,7 +41,7 @@ export interface CardSectionProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
 }
 
-/* ── Context (for potential future inter-section communication) */
+/* ── Context ─────────────────────────────────────────────────── */
 
 const CardContext = createContext<{ variant: CardVariant }>({
   variant: "default",
@@ -49,7 +49,7 @@ const CardContext = createContext<{ variant: CardVariant }>({
 
 /* ── Sub-components ───────────────────────────────────────────── */
 
-const CardHeader = forwardRef<HTMLDivElement, CardSectionProps>(
+export const CardHeader = forwardRef<HTMLDivElement, CardSectionProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -62,7 +62,33 @@ const CardHeader = forwardRef<HTMLDivElement, CardSectionProps>(
 );
 CardHeader.displayName = "Card.Header";
 
-const CardBody = forwardRef<HTMLDivElement, CardSectionProps>(
+export const CardTitle = forwardRef<HTMLHeadingElement, HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, children, ...props }, ref) => (
+    <h3
+      ref={ref}
+      className={cn("font-heading text-xl font-bold text-[var(--ink)]", className)}
+      {...props}
+    >
+      {children}
+    </h3>
+  )
+);
+CardTitle.displayName = "CardTitle";
+
+export const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, children, ...props }, ref) => (
+    <p
+      ref={ref}
+      className={cn("text-sm text-[var(--ink-muted)] leading-relaxed", className)}
+      {...props}
+    >
+      {children}
+    </p>
+  )
+);
+CardDescription.displayName = "CardDescription";
+
+export const CardBody = forwardRef<HTMLDivElement, CardSectionProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -75,7 +101,9 @@ const CardBody = forwardRef<HTMLDivElement, CardSectionProps>(
 );
 CardBody.displayName = "Card.Body";
 
-const CardFooter = forwardRef<HTMLDivElement, CardSectionProps>(
+export const CardContent = CardBody;
+
+export const CardFooter = forwardRef<HTMLDivElement, CardSectionProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -103,11 +131,7 @@ const CardRoot = forwardRef<HTMLDivElement, CardProps>(
         <motion.div
           ref={ref}
           className={cn(cardVariants({ variant }), className)}
-          whileHover={
-            shouldAnimate
-              ? { y: -4, boxShadow: "0 20px 25px -5px rgba(118, 85, 232, 0.1), 0 8px 10px -6px rgba(118, 85, 232, 0.05)" }
-              : undefined
-          }
+          whileHover={shouldAnimate ? { filter: "brightness(1.08)" } : undefined}
           transition={
             shouldAnimate
               ? { type: "spring", stiffness: 400, damping: 25, duration: 0.2 }
@@ -125,13 +149,6 @@ CardRoot.displayName = "Card";
 
 /* ── Compound component export ────────────────────────────────── */
 
-/**
- * Card with compound sub-components:
- * - `Card` — outer wrapper
- * - `Card.Header` — top section
- * - `Card.Body` — main content
- * - `Card.Footer` — bottom section with top border
- */
 const Card = Object.assign(CardRoot, {
   Header: CardHeader,
   Body: CardBody,
@@ -140,3 +157,4 @@ const Card = Object.assign(CardRoot, {
 
 export { useContext as _useCardContext, CardContext };
 export default Card;
+export { Card };

@@ -1250,10 +1250,10 @@ Do not expose hidden answer keys or ideal prompts before the learner has attempt
 Use a friendly, colourful, Duolingo-inspired visual language while retaining PromptLab's own identity.
 
 Proposed palette:
-- Primary purple: `#7655E8`
-- Mint green: `#29C5A4`
-- Achievement gold: `#FFCA55`
-- Coral: `#FF806B`
+- Primary purple: `#FF5000`
+- Mint green: `#23824F`
+- Achievement gold: `#9A5B00`
+- Coral: `#C43D00`
 - Soft lavender: `#F5F3FF`
 - Dark navy: `#24243A`
 

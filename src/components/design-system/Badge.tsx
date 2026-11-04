@@ -9,7 +9,7 @@ import { cn } from "@/lib/cn";
 const badgeVariants = cva(
   [
     "inline-flex items-center justify-center",
-    "rounded-[var(--radius-full)]",
+    "rounded-none",
     "px-2.5 py-0.5",
     "text-xs font-semibold leading-snug",
     "select-none whitespace-nowrap",
@@ -18,7 +18,7 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-200",
+          "bg-[var(--select-tint)] text-[var(--select)] dark:bg-[var(--select)]/40 dark:text-[var(--select-tint)]",
         success:
           "bg-[var(--success-bg)] text-[var(--success-text)]",
         reward:
@@ -26,7 +26,7 @@ const badgeVariants = cva(
         attention:
           "bg-[var(--attention-bg)] text-[var(--attention-text)]",
         neutral:
-          "bg-navy-100 text-navy-700 dark:bg-navy-700 dark:text-navy-200",
+          "bg-[var(--surface-sunken)] text-[var(--ink)] dark:bg-[var(--surface-raised)] dark:text-[var(--ink)]",
       },
     },
     defaultVariants: {

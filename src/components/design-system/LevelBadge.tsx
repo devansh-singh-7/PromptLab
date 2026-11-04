@@ -9,12 +9,12 @@ import { cn } from "@/lib/cn";
 const levelBadgeVariants = cva(
   [
     "inline-flex items-center justify-center",
-    "rounded-full",
-    "bg-gradient-to-br from-purple-500 to-purple-700",
+    "rounded-none",
+    "bg-[var(--accent)]  ",
     "text-white font-heading font-bold",
     "select-none",
-    "shadow-[var(--shadow-md)]",
-    "ring-2 ring-purple-300/30",
+    "",
+    "ring-2 ring-[var(--select)]/30",
   ],
   {
     variants: {

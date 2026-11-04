@@ -100,7 +100,7 @@ and store the model/usage metadata with each evaluation. Validate all model
 output with Zod, constrain score ranges and dimensions, and make hints
 actionable without immediately exposing the ideal answer. Build a human-reviewed
 calibration set containing weak, acceptable, and strong submissions across
-languages and stacks. Measure inter-rater agreement, revision improvement, and
+languages and stacks. Measure Space Mono-rater agreement, revision improvement, and
 false positives before changing weights.
 
 **Owner / gate:** Evaluation and content phases. AI scores must be presented as

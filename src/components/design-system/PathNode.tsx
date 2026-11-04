@@ -14,7 +14,7 @@ import ProgressRing from "./ProgressRing";
 /* ── Variant Definitions ────────────────────────────────────── */
 
 const nodeSize = cva(
-  "relative flex items-center justify-center rounded-full transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]",
+  "relative flex items-center justify-center rounded-none transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand)]",
   {
     variants: {
       size: {
@@ -69,9 +69,9 @@ function getIconSize(size: "sm" | "md" | "lg" | null | undefined): number {
     case "sm":
       return 14;
     case "lg":
-      return 28;
+      return 26;
     default:
-      return 20;
+      return 18;
   }
 }
 
@@ -96,25 +96,24 @@ export default function PathNode({
     locked:
       "bg-[var(--surface-sunken)] border-2 border-[var(--border)] text-[var(--ink-faint)] cursor-not-allowed opacity-60",
     available:
-      "bg-[var(--surface)] border-2 border-[var(--brand)] text-[var(--brand)] cursor-pointer shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)]",
+      "bg-[var(--surface)] border-2 border-[var(--brand)] text-[var(--brand)] cursor-pointer  hover:",
     "in-progress":
-      "bg-[var(--brand)] border-2 border-[var(--brand)] text-[var(--ink-inverse)] cursor-pointer shadow-[var(--shadow-glow)]",
+      "bg-[var(--brand)] border-2 border-[var(--brand)] text-white cursor-pointer ",
     completed:
-      "bg-mint-500 border-2 border-mint-500 text-white cursor-pointer shadow-[var(--shadow-glow-mint)]",
+      "bg-emerald-500 border-2 border-emerald-500 text-white cursor-pointer ",
     mastered:
-      "bg-gold-400 border-2 border-gold-400 text-white cursor-pointer shadow-[var(--shadow-glow-gold)]",
+      "bg-amber-400 border-2 border-amber-400 text-amber-950 cursor-pointer ",
   };
 
   // Pulsing animation for available state
   const pulseAnimation: TargetAndTransition =
     state === "available" && !reducedMotion
       ? {
-          scale: [1, 1.06, 1],
+          scale: [1, 1.05, 1],
           transition: {
-            duration: 2,
+            duration: 2.2,
             repeat: Infinity,
             ease: "easeInOut" as const,
-            type: "tween",
           },
         }
       : {};
@@ -126,7 +125,7 @@ export default function PathNode({
       case "available":
         return (
           <span
-            className="rounded-full bg-[var(--brand)] block"
+            className="rounded-none bg-[var(--brand)] block"
             style={{ width: iconSize * 0.45, height: iconSize * 0.45 }}
             aria-hidden
           />
@@ -137,7 +136,7 @@ export default function PathNode({
             value={progress}
             size={sizePixels * 0.6}
             strokeWidth={size === "sm" ? 2 : 3}
-            color="var(--ink-inverse)"
+            color="#ffffff"
             showLabel={size !== "sm"}
             className="pointer-events-none"
           />
@@ -145,7 +144,7 @@ export default function PathNode({
       case "completed":
         return <Check size={iconSize} strokeWidth={3} aria-hidden />;
       case "mastered":
-        return <Star size={iconSize} fill="currentColor" aria-hidden />;
+        return <Star size={iconSize} fill="currentColor" stroke="currentColor" aria-hidden />;
     }
   };
 
@@ -162,27 +161,26 @@ export default function PathNode({
             : `Node: ${state}`
         }
         className={cn(nodeSize({ size }), stateStyles[state], className)}
-        // Mount/exit animation
-        initial={reducedMotion ? false : { scale: 0.8, opacity: 0 }}
+        initial={reducedMotion ? false : { scale: 0.9, opacity: 0 }}
         animate={{
           scale: 1,
           opacity: 1,
           ...pulseAnimation,
         }}
-        exit={reducedMotion ? undefined : { scale: 0.8, opacity: 0 }}
+        exit={reducedMotion ? undefined : { scale: 0.9, opacity: 0 }}
         transition={{
           type: "spring",
-          stiffness: 300,
-          damping: 22,
+          stiffness: 320,
+          damping: 24,
         }}
         whileHover={
           isInteractive && !reducedMotion
-            ? { scale: 1.08, transition: { type: "spring", stiffness: 400, damping: 20 } }
+            ? { scale: 1.06, transition: { type: "spring", stiffness: 400, damping: 20 } }
             : undefined
         }
         whileTap={
           isInteractive && !reducedMotion
-            ? { scale: 0.95 }
+            ? { scale: 0.96 }
             : undefined
         }
       >

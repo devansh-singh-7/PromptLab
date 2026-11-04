@@ -71,7 +71,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
     return (
       <button
         className={cn(
-          "inline-flex h-9 w-9 items-center justify-center rounded-full",
+          "inline-flex h-9 w-9 items-center justify-center rounded-none",
           "bg-[var(--surface-raised)] text-[var(--ink-muted)]",
           className
         )}
@@ -100,7 +100,7 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
         transitionTheme(setTheme, requested);
       }}
       className={cn(
-        "inline-flex h-9 w-9 items-center justify-center rounded-full",
+        "inline-flex h-9 w-9 items-center justify-center rounded-none",
         "bg-[var(--surface-raised)] text-[var(--ink-muted)]",
         "transition-all duration-200",
         "hover:bg-[var(--brand-muted)] hover:text-[var(--brand)]",

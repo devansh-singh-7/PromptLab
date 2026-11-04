@@ -74,11 +74,11 @@ const XPChip = forwardRef<HTMLSpanElement, XPChipProps>(
         ref={ref}
         className={cn(
           "inline-flex items-center gap-1",
-          "rounded-[var(--radius-full)]",
+          "rounded-none",
           "px-3 py-1",
           "text-sm font-bold leading-snug",
           "bg-[var(--reward-bg)] text-[var(--reward-text)]",
-          "shadow-[var(--shadow-glow-gold)]",
+          "",
           "select-none whitespace-nowrap",
           className
         )}

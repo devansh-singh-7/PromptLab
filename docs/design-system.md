@@ -1,207 +1,74 @@
 # PromptLab design system
 
-The design system is the product language for PromptLab. Later UI work should
-reuse these tokens and primitives instead of introducing one-off colors,
-radii, shadows, or motion. The living component catalog is available at
-[`/design-system`](../src/app/design-system/page.tsx).
-
-## Product feeling
-
-PromptLab is warm, welcoming, encouraging, and a little playful without being
-childish. Its signature is a soft, rounded, purple-tinted surface with a
-gentle glow and light, purposeful motion. The visual language is original: it
-does not use a green owl mascot, chunky 3D bottom-border buttons, or copied
-illustration/layout patterns.
-
-### Area personalities
-
-| Area | Personality | Application |
-| --- | --- | --- |
-| Marketing | Expressive | Large type, generous whitespace, gentle entrance motion |
-| Dashboard | Motivating | Colorful progress, XP, streaks, and clear next actions |
-| Learning path | Playful | Trail map, PathNode states, and friendly milestones |
-| Lesson | Calm | Focused reading width, low-noise controls, feedback near the work |
-| Challenge Arena | Game-like | Strong state feedback, progress, and celebratory completion |
-| Studio | Professional | Dark workbench, restrained decoration, PromptLab branding |
+PromptLab is a precise, welcoming design tool: pale paper, hard ink lines,
+one hot-orange accent, electric-blue selection, and a small pixel mascot.
+This document supersedes the previous purple/mint/gold/coral system.
 
 ## Tokens
 
-The source of truth is [`globals.css`](../src/app/globals.css). Tailwind v4
-utilities are generated from the same values through `@theme`.
+The source of truth is [`globals.css`](../src/app/globals.css).
 
-### Color scales
+| Token | Light | Dark |
+| --- | --- | --- |
+| Paper | `#FFEEE6` | `#15171D` |
+| Panel | `#FFFFFF` | `#1D2028` |
+| Ink | `#23262F` | `#F6EDE8` |
+| Muted ink | `#4A505C` | `#AEB3BF` |
+| Accent | `#FF5000` | `#FF5000` |
+| On accent | `#23262F` | `#15171D` |
+| Selection | `#1F3BFF` | `#7C8BFF` |
+| Selection tint | `rgba(31,59,255,.08)` | translucent blue |
+| Border | ink | `rgba(246,237,232,.85)` |
 
-Every core color has a 50, 100, 200, 300, 400, 500, 600, 700, 800, and 900
-step:
+Orange is a fill, marker, or underline; it is never small text on paper.
+Text on orange uses the dark on-accent ink. Blue means selection, focus, links,
+or current state. Success, danger, and warning states always include an icon
+and a word as well as color.
 
-- **Purple**: brand and interactive focus, centered on `#7655E8`.
-- **Mint**: success and completion, centered on `#29C5A4`.
-- **Gold**: XP and achievement reward, centered on `#FFCA55`.
-- **Coral**: attention and warnings, centered on `#FF806B`.
-- **Navy**: ink, muted text, borders, and dark surfaces, centered on `#24243A`.
+Approved AA text pairs:
 
-Mint, gold, and coral 400/500 values are intentionally visual fills, rings,
-and illustrations. They are not used as small text on white because their
-contrast is insufficient.
+| Text | Background | Ratio target | Use |
+| --- | --- | --- | --- |
+| `#23262F` | `#FFEEE6` or `#FFFFFF` | 4.5:1+ | light body and labels |
+| `#4A505C` | `#FFEEE6` or `#FFFFFF` | 4.5:1+ | light supporting text |
+| `#F6EDE8` | `#15171D` or `#1D2028` | 4.5:1+ | dark body and labels |
+| `#AEB3BF` | `#15171D` or `#1D2028` | 4.5:1+ | dark supporting text |
+| `#23262F` | `#FF5000` | 4.5:1+ | text on accent controls |
+| `#FFFFFF` | `#1F3BFF` | 4.5:1+ | selection tags |
 
-### Semantic CSS variables
+## Shape and motifs
 
-Use semantic variables in components so light/dark theme behavior stays
-centralized:
+Everything is square: radius is zero, surfaces and primary controls use 2px
+solid borders, secondary dividers use 1px, and there are no shadows, gradients,
+blur, glass, or glow. Depth comes from offset layers and color blocks.
 
-| Token | Meaning |
-| --- | --- |
-| `--brand` | Primary action, links, focus |
-| `--success` | Completion and positive feedback |
-| `--reward` | XP and achievement emphasis |
-| `--attention` | Warning and attention emphasis |
-| `--surface` | Main page background |
-| `--surface-raised` | Cards and elevated sections |
-| `--ink` | Primary text |
-| `--ink-muted` | Supporting text |
-| `--border` | Default divider and control border |
+Reusable motifs are `SelectionFrame`, `Tag`, `Ruler`, `PropertiesPanel`,
+`PixelBar`, `GridBackground`, measurement marks, `Mascot`/`PixelPip`, pixel
+bursts, and window panels. Decorative rulers and grids are `aria-hidden`; the
+same information is always available as real text.
 
-Theme switching uses `next-themes` with the `class` strategy. Use
-`ThemeToggle` for user-facing theme controls and avoid reading `window` during
-render.
+Buttons, inputs, tabs, cards, dialogs, sheets, toasts, tables, and charts follow
+the same square treatment. Interactive targets are at least 44px. Focus is a
+3px ink outline with a 3px offset; inputs also receive the blue selection frame.
 
-## Contrast
+## Typography and motion
 
-Contrast was checked with the WCAG 2 relative-luminance formula. Normal text
-must meet 4.5:1; large text and UI graphics must meet 3:1. These are the
-approved text/background pairs in the initial palette:
+`next/font` loads Space Mono 400/700 for headings, labels, buttons, numbers,
+tags, and code; Space Grotesk 400–700 for readable long-form copy; and Noto
+Sans Devanagari for Hindi and Marathi. Mono ligatures are off, display type is
+balanced and tightly tracked, and `:lang(hi)`/`:lang(mr)` disables caps and
+negative tracking.
 
-| Text token | Background | Ratio | Use |
-| --- | --- | ---: | --- |
-| `#24243A` (`navy-800`) | `#FFFFFF` | 15.12:1 | Primary light-theme text |
-| `#4E4E72` (`navy-500`) | `#FFFFFF` | 7.90:1 | Muted light-theme text |
-| `#6D3DE0` (`purple-600`) | `#FFFFFF` | 6.19:1 | Purple text and links |
-| `#5B2CC6` (`purple-700`) | `#FFFFFF` | 8.01:1 | Strong purple text |
-| `#157A64` (`mint-700`) | `#FFFFFF` | 5.25:1 | Success text |
-| `#B45309` (`gold-700`) | `#FFFFFF` | 5.02:1 | Reward text |
-| `#B7321C` (`coral-700`) | `#FFFFFF` | 6.02:1 | Attention text |
-| `#24243A` (`navy-800`) | `#F5F3FF` | 13.79:1 | Text on raised lavender |
-| `#4E4E72` (`navy-500`) | `#F5F3FF` | 7.21:1 | Muted text on raised lavender |
-| `#F0F0F8` (`navy-50`) | `#1A1A2E` (`navy-900`) | 15.05:1 | Primary dark-theme text |
-| `#1A9A7E` (`mint-600`) | `#1A1A2E` (`navy-900`) | 4.85:1 | Success text in dark theme |
-| `#FFCA55` (`gold-400`) | `#1A1A2E` (`navy-900`) | 11.23:1 | Reward text in dark theme |
-| `#FF806B` (`coral-400`) | `#1A1A2E` (`navy-900`) | 6.95:1 | Attention text in dark theme |
-| `#C4B5FD` (`purple-300`) | `#1A1A2E` (`navy-900`) | 9.24:1 | Brand text in dark theme |
+Motion is mechanical and brief (120–220ms ease-out). Use `steps()` for cues,
+transform/opacity for entrances, pixel dispersal for celebrations, and static
+equivalents under `prefers-reduced-motion`.
 
-The raw brand colors `#29C5A4`, `#FFCA55`, and `#FF806B` are valid for large
-filled controls, rings, and illustrations but should not be used for normal
-text on white. Components select darker semantic text steps automatically.
+## Components and copy
 
-## Shape, space, and depth
+`components/design-system/index.ts` is the public component inventory. Keep
+behavior, keyboard handling, accessible names, and real labels unchanged while
+restyling. Use warm, plain copy such as “Nice try. Here’s a nudge.” and never
+make streaks or status feel punitive.
 
-- Use the 4px spacing scale and generous gaps between learning steps.
-- Cards use 16–24px radii (`--radius-lg` through `--radius-2xl`).
-- Buttons, chips, and badges use full-pill radii.
-- Shadows are layered and purple-tinted at low opacity:
-  `--shadow-sm`, `--shadow-md`, `--shadow-lg`, `--shadow-xl`, and the glow
-  tokens.
-- Hover is a slight lift. Press feedback is a subtle `scale(0.98)` and
-  smaller shadow. Every interactive control has a 2px brand focus ring with a
-  2px offset.
-
-## Typography
-
-Fonts are loaded with `next/font` in [`fonts.ts`](../src/lib/fonts.ts):
-
-- **Lexend** for headings and prominent labels.
-- **Inter** for body copy and controls.
-- **JetBrains Mono** for code.
-- **Noto Sans Devanagari** as the Hindi and Marathi fallback.
-
-The type scale is defined in `globals.css` from `xs` through `5xl`. Body copy
-uses a relaxed 1.6 line height; headings use a comfortable, script-friendly
-line height rather than compressed display spacing. Always test translated
-strings for wrapping, especially in headings and buttons.
-
-## Motion
-
-Framer Motion provides short spring interactions in the 150–300ms range.
-Motion should explain state or provide feedback, not decorate every action.
-Confetti and celebration are reserved for lesson or level completion.
-
-Every animated component uses `useReducedMotion`, and the global reduced-motion
-media query provides a calm static fallback. Sound is optional and off by
-default. Do not add autoplay audio.
-
-## Pip mascot
-
-`Mascot` exposes a stable interface:
-
-```tsx
-<Mascot state="wave" size="md" label="Pip waves hello" />
-```
-
-States are `wave`, `think`, `cheer`, `encourage`, and `rest`; sizes are `sm`,
-`md`, and `lg`. The current implementation is an original rounded speech
-bubble with blinking text-caret eyes and simple SVG placeholders. Final art
-can replace the SVG internals without changing callers.
-
-## Component inventory
-
-All components are typed, keyboard-aware where interactive, and exported from
-[`components/design-system/index.ts`](../src/components/design-system/index.ts):
-
-`Button`, `IconButton`, `Card`, `Badge`, `Chip`, `XPChip`, `StreakChip`,
-`LevelBadge`, `ProgressBar`, `ProgressRing`, `Avatar`, `Input`, `Textarea`,
-`Select`, `Tabs`, `Dialog`, `Sheet`, `Tooltip`, `Toast`, `Skeleton`,
-`EmptyState`, `ErrorState`, `PathNode`, `FeedbackPanel`,
-`CelebrationOverlay`, `Callout`, and `Mascot`.
-
-Use Radix primitives for focus management, escape handling, and keyboard
-navigation in Select, Tabs, Dialog, Sheet, and Tooltip. Icon-only controls
-must provide an accessible `aria-label`. Inputs must have a visible label or
-an explicit accessible name.
-
-## Microcopy
-
-Copy is encouraging, plain, and human:
-
-- “Welcome back, Devansh. Ready for a quick one?”
-- “Nice try. Here’s a nudge.”
-- “That’s a wrap for today. See you tomorrow!”
-
-Never guilt-trip learners about streaks or breaks. A missed day is a normal
-part of learning; describe the next step, not the failure.
-
-## Responsive layout
-
-Studio is desktop-first. Learning screens work on mobile:
-
-- Desktop uses a left sidebar for persistent navigation.
-- Mobile uses bottom tab navigation and sheets for secondary destinations.
-- Keep lesson reading widths comfortable and preserve keyboard focus order when
-  controls reflow.
-
-## Definition of done for new UI
-
-Before shipping a new surface:
-
-1. Reuse semantic tokens and an existing primitive where possible.
-2. Check keyboard navigation, visible focus, labels, and error announcements.
-3. Check light and dark themes.
-4. Check `prefers-reduced-motion`.
-5. Check English plus a Hindi/Marathi sample when text is user-facing.
-6. Confirm all text/background pairs against the approved contrast table or
-   add a measured pair to this document.
-# Theme modes
-
-PromptLab supports Light, Dark, and System modes through `next-themes`. The
-choice is local to the browser and is applied with the `class` strategy so
-semantic tokens remain the single styling interface. The compact
-`ThemeToggle` cycles modes; `ThemeSelector` is intended for settings screens.
-Theme changes use a circular View Transition when supported and a scoped
-fallback transition otherwise. Reduced-motion users receive an instant switch.
-
-The application surfaces use a calm blue brand (`#2876b8` / dark-mode
-`#72b5df`) for readable navigation and actions. The landing page intentionally
-scopes the original purple identity to its own surfaces and illustrations.
-Text uses the navy ink tokens; mint, gold, and coral remain accent fills rather
-than body text. The main contrast pairs are `--ink` on `--surface`,
-`--ink-muted` on `--surface`, white on `--brand` in light mode, and
-`--ink` on `--surface-raised` in dark mode; these are selected from the
-token scales to meet WCAG AA.
+Run `pnpm check:theme` to reject legacy radii, shadows, gradients, blur, fonts,
+and palette values.

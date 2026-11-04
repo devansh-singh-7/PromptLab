@@ -64,10 +64,10 @@ Create a friendly, colourful, modern educational SaaS product with:
 ### 4.2 Proposed palette
 
 Use these as initial design tokens; refine contrast and accessibility during implementation:
-- Primary purple: `#7655E8`
-- Mint green: `#29C5A4`
-- Achievement gold: `#FFCA55`
-- Coral: `#FF806B`
+- Primary purple: `#FF5000`
+- Mint green: `#23824F`
+- Achievement gold: `#9A5B00`
+- Coral: `#C43D00`
 - Soft lavender: `#F5F3FF`
 - Dark navy: `#24243A`
 

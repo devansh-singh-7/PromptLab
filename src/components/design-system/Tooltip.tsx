@@ -41,14 +41,14 @@ const TooltipContent = forwardRef<
       className={cn(
         /* Base styles */
         "z-50 overflow-hidden",
-        "rounded-[var(--radius-sm)]",
+        "rounded-none",
         "px-3 py-1.5",
         "text-xs font-medium leading-snug",
         /* Colors — dark navy bg, white text */
-        "bg-navy-900 text-white",
-        "dark:bg-navy-100 dark:text-navy-900",
+        "bg-[var(--ink)] text-white",
+        "dark:bg-[var(--surface-raised)] dark:text-[var(--ink)]",
         /* Shadow */
-        "shadow-[var(--shadow-md)]",
+        "",
         /* Animation */
         "animate-in fade-in-0 zoom-in-95",
         "data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
@@ -62,7 +62,7 @@ const TooltipContent = forwardRef<
     >
       {children}
       <TooltipPrimitive.Arrow
-        className="fill-navy-900 dark:fill-navy-100"
+        className="fill-[var(--ink)] dark:fill-[var(--surface-sunken)]"
         width={10}
         height={5}
       />
