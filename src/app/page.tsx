@@ -3,13 +3,11 @@
 import {
   ArrowRight,
   BookOpen,
-  Check,
   CircleCheckBig,
   Code2,
   Clock3,
   Layers3,
   Menu,
-  Play,
   Rocket,
   Sparkles,
   Target,
@@ -143,7 +141,6 @@ function Reveal({
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [promptRunning, setPromptRunning] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState("Frontend");
   const loginHref = "/login?next=%2Fdashboard";
   const activeLevel = levels.find((level) => level.label === selectedLevel) ?? levels[1];
@@ -161,7 +158,6 @@ export default function Home() {
         <nav className={`landing-nav ${menuOpen ? "is-open" : ""}`} aria-label="Main navigation">
           <a href="#courses" onClick={() => setMenuOpen(false)}>Courses</a>
           <a href="#how-it-works" onClick={() => setMenuOpen(false)}>How it works</a>
-          <a href="#studio" onClick={() => setMenuOpen(false)}>Studio</a>
           <a href="/login" onClick={() => setMenuOpen(false)}>Log in</a>
         </nav>
 
@@ -330,85 +326,6 @@ export default function Home() {
                 </a>
               )}
             </motion.div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* Studio Preview Section */}
-      <section className="studio-section landing-container" id="studio">
-        <Reveal className="studio-heading">
-          <div>
-            <h2>The PromptLab <span>Studio</span></h2>
-            <p>A focused environment where you prompt, inspect generated code, and verify behavior in real time.</p>
-          </div>
-          <span className="studio-status">
-            <i /> Live sandbox ready
-          </span>
-        </Reveal>
-
-        <Reveal delay={0.06}>
-          <div className="studio-window">
-            <div className="studio-toolbar">
-              <span className="window-dots"><i /><i /><i /></span>
-              <span className="studio-file"><Code2 size={15} /> prompt-workspace.tsx</span>
-              <span className="studio-toolbar-label">PromptLab Studio v1.0</span>
-            </div>
-
-            <div className="studio-grid">
-              <div className="studio-panel prompt-panel">
-                <span className="panel-label">1. Natural Language Prompt</span>
-                <p>
-                  Create an accessible, responsive navigation bar with a subtle blur backdrop, mobile hamburger sheet, and keyboard escape handling.
-                </p>
-                <button
-                  className="run-button"
-                  type="button"
-                  onClick={() => {
-                    setPromptRunning(true);
-                    window.setTimeout(() => setPromptRunning(false), 1200);
-                  }}
-                  aria-live="polite"
-                >
-                  <Play size={14} fill="currentColor" />
-                  {promptRunning ? "Generating preview..." : "Run in sandbox"}
-                </button>
-              </div>
-
-              <div className="studio-panel code-panel">
-                <span className="panel-label">2. Verified Code Output</span>
-                <div className="code-lines">
-                  <i style={{ width: "85%" }} />
-                  <i style={{ width: "62%", marginLeft: "14px" }} />
-                  <i style={{ width: "74%", marginLeft: "14px" }} />
-                  <i style={{ width: "48%", marginLeft: "28px" }} />
-                  <i style={{ width: "70%" }} />
-                  <i style={{ width: "38%" }} />
-                </div>
-              </div>
-
-              <div className="studio-panel preview-panel">
-                <span className="panel-label">3. Live Component Render</span>
-                <div className="mock-preview">
-                  <div className="mock-nav" />
-                  <div className="mock-hero">
-                    <span />
-                    <b />
-                    <i />
-                  </div>
-                  <div className="mock-cards">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                </div>
-              </div>
-
-              <div className="studio-feedback-bar">
-                <span className="feedback-icon"><Check size={16} /></span>
-                <span><strong>Rubric Evaluation:</strong> Excellent constraint specification and explicit state considerations.</span>
-                <b>96/100</b>
-              </div>
-            </div>
           </div>
         </Reveal>
       </section>
