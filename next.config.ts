@@ -42,7 +42,7 @@ const nextConfig: NextConfig = {
             value: [
               "default-src 'self'",
               // Next.js requires inline scripts and styles in dev/build
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://apis.google.com",
               // TODO: Tighten script-src — remove 'unsafe-eval' and 'unsafe-inline' for production.
               //       Use nonces via next.config headers or middleware for inline scripts.
               "style-src 'self' 'unsafe-inline'",
@@ -52,13 +52,13 @@ const nextConfig: NextConfig = {
               // Fonts: self-hosted via next/font, no external requests needed
               "font-src 'self' data:",
               // TODO: Restrict connect-src to specific API domains once known.
-              "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.google.com",
+              "connect-src 'self' https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com https://*.google.com https://securetoken.googleapis.com https://identitytoolkit.googleapis.com",
               // YouTube embeds (youtube-nocookie.com for privacy) and Sandpack bundler iframes
-              "frame-src 'self' https://www.youtube-nocookie.com https://*.codesandbox.io https://*.sandpack.codesandbox.io",
+              "frame-src 'self' https://www.youtube-nocookie.com https://*.codesandbox.io https://*.sandpack.codesandbox.io https://*.firebaseapp.com https://accounts.google.com",
               // TODO: Review frame-src — tighten Sandpack domains once exact bundler URLs are known.
               // Firebase Auth popup/redirect domains
               // TODO: Replace *.firebaseapp.com with your specific Firebase project domain.
-              "child-src 'self' https://*.firebaseapp.com",
+              "child-src 'self' https://*.firebaseapp.com https://accounts.google.com",
               "base-uri 'self'",
               "form-action 'self'",
               "frame-ancestors 'none'",
