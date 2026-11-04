@@ -8,7 +8,12 @@ import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import AuthShell, { type AuthPipState } from "./AuthShell";
-import { createSession, signInWithGoogle, signInWithPassword } from "@/lib/auth/client";
+import {
+  createSession,
+  getGoogleRedirectCredential,
+  signInWithGoogle,
+  signInWithPassword,
+} from "@/lib/auth/client";
 import { getSafeRedirect } from "@/lib/auth/redirect";
 
 const schema = z.object({
@@ -23,6 +28,14 @@ function friendlyAuthError(error: unknown) {
   if (code === "auth/network-request-failed") return "Unable to reach auth services. Please check your network connection.";
   if (code === "auth/user-disabled") return "This account has been disabled. Please contact support.";
   if (code === "auth/popup-closed-by-user") return null;
+  if (code === "auth/unauthorized-domain") return "Google sign-in is not enabled for this site yet.";
+  if (code === "auth/popup-blocked") return "Your browser blocked the Google sign-in window. Please allow popups and try again.";
+  if (code === "auth/account-exists-with-different-credential") {
+    return "An account already exists with this email. Sign in with email and password instead.";
+  }
+  if (code === "auth/popup-operation-not-supported-in-this-environment") {
+    return "Google sign-in is not supported in this browser. Please try another browser.";
+  }
   return "Email or password did not match. Please verify your credentials.";
 }
 
@@ -45,6 +58,26 @@ export default function LoginForm() {
   useEffect(() => {
     if (formError) setPipState("encourage");
   }, [formError]);
+
+  useEffect(() => {
+    let active = true;
+    void getGoogleRedirectCredential()
+      .then(async (credential) => {
+        if (!active || !credential) return;
+        setStatus("loading");
+        await createSession(credential.user);
+        setStatus("success");
+        setPipState("cheer");
+        window.setTimeout(() => { window.location.assign(redirect); }, 400);
+      })
+      .catch((error) => {
+        if (!active) return;
+        setStatus("idle");
+        const message = friendlyAuthError(error);
+        if (message) setFormError(message);
+      });
+    return () => { active = false; };
+  }, [redirect]);
 
   const submit = async (values: FormValues) => {
     setFormError("");

@@ -2,9 +2,11 @@ import { getApps, initializeApp } from "firebase/app";
 import {
   GoogleAuthProvider,
   getAuth,
+  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
   signInWithRedirect,
+  getRedirectResult,
   type UserCredential,
 } from "firebase/auth";
 
@@ -30,6 +32,11 @@ export async function signInWithPassword(email: string, password: string) {
   return signInWithEmailAndPassword(auth, email, password);
 }
 
+export async function signUpWithPassword(email: string, password: string) {
+  const auth = getFirebaseAuth();
+  return createUserWithEmailAndPassword(auth, email, password);
+}
+
 export async function signInWithGoogle(): Promise<UserCredential | null> {
   const auth = getFirebaseAuth();
   const provider = new GoogleAuthProvider();
@@ -43,6 +50,11 @@ export async function signInWithGoogle(): Promise<UserCredential | null> {
     }
     throw error;
   }
+}
+
+export async function getGoogleRedirectCredential(): Promise<UserCredential | null> {
+  const auth = getFirebaseAuth();
+  return getRedirectResult(auth);
 }
 
 export async function createSession(user: UserCredential["user"]) {
